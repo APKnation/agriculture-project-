@@ -1,87 +1,43 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Login from './components/Login.vue';
-import Dashboard from './components/Dashboard.vue'; 
+import { createRouter, createWebHistory } from "vue-router";
+
+// Import all components
+import Login from "./components/Login.vue";
+import Dashboard from "./components/Dashboard.vue";
+import FarmerDashboard from "./components/FarmerDashboard.vue";
+import OfficerDashboard from "./components/OfficerDashboard.vue";
+import AdminDashboard from "./components/AdminDashboard.vue";
+import Marketplace from "./components/Marketplace.vue";
+import PriceTrends from "./components/PriceTrends.vue";
+import DemandInsights from "./components/DemandInsights.vue";
+import CropRecommendations from "./components/CropRecommendations.vue";
+import PriceComparison from "./components/PriceComparison.vue";
+import Notifications from "./components/Notifications.vue";
+import Profile from "./components/Profile.vue";
 
 const routes = [
-  { path: '/', redirect: '/login' },
-  { path: '/login', name: 'Login', component: Login },
-  
-  { 
-    path: '/dashboard', 
-    name: 'Dashboard', 
-    component: Dashboard, 
-    meta: { requiresAuth: true } 
-  },
+  { path: "/", redirect: "/dashboard" },
+  { path: "/login", component: Login },
 
-  // FIXED: Moved these inside the routes array correctly
-  { 
-    path: '/price-comparison', 
-    name: 'PricesComparison',
-    component: () => import('./components/PriceComparison.vue'), 
-    meta: { requiresAuth: true } 
-  },
-  { 
-    path: '/notifications', 
-    name: 'Notifications',
-    component: () => import('./components/Notifications.vue'), 
-    meta: { requiresAuth: true } 
-  },
-  {
-  path: '/create-profile',
-  name: 'CreateProfile',
-  component: () => import('./components/CreateProfile.vue'),
-  meta: { requiresAuth: false } // Change this to false so new users can see it!
-},
-  { 
-    path: '/profile', 
-    name: 'Profile',
-    component: () => import('./components/Profile.vue'), 
-    meta: { requiresAuth: true } 
-  },
+  { path: "/dashboard", component: Dashboard },
+  { path: "/farmer-dashboard", component: FarmerDashboard },
+  { path: "/officer-dashboard", component: OfficerDashboard },
+  { path: "/admin-dashboard", component: AdminDashboard },
 
-  // ROLE-SPECIFIC PAGES
-  { 
-    path: '/farmer-dashboard', 
-    component: () => import('./components/FarmerDashboard.vue'), 
-    meta: { requiresAuth: true, role: 'farmer' } 
-  },
-  { 
-    path: '/admin-dashboard', 
-    component: () => import('./components/AdminDashboard.vue'), 
-    meta: { requiresAuth: true, role: 'admin' } 
-  },
-  { 
-    path: '/officer-dashboard', 
-    component: () => import('./components/OfficerDashboard.vue'), 
-    meta: { requiresAuth: true, role: 'officer' } 
-  }
+  { path: "/marketplace", component: Marketplace },
+  { path: "/price-trends", component: PriceTrends },
+  { path: "/demand", component: DemandInsights },
+  { path: "/recommendations", component: CropRecommendations },
+  { path: "/price-comparison", component: PriceComparison },
+  { path: "/notifications", component: Notifications },
+  { path: "/profile", component: Profile },
+
+  // Catch-all redirect to dashboard
+  { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
-});
-
-// Guard Logic
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('role')?.toLowerCase().trim();
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  if (requiresAuth && !token) {
-    return next('/login');
-  }
-
-  if (to.path === '/login' && token) {
-    return next('/dashboard');
-  }
-
-  if (to.meta.role && to.meta.role !== userRole) {
-    console.warn("Unauthorized. Redirecting...");
-    return next('/dashboard'); 
-  }
-
-  next();
+  routes,
 });
 
 export default router;

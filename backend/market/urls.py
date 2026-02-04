@@ -1,14 +1,24 @@
-from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from market.views import UserViewSet, CropViewSet, PriceRecordViewSet, NotificationViewSet
+from . import views
 
-router.register(r'users', UserViewSet, basename='user')
-router.register(r'crops', CropViewSet, basename='crop')
-router.register(r'price-records', PriceRecordViewSet, basename='price-record')
-router.register(r'notifications', NotificationViewSet, basename='notification')
+# Create a router and register ViewSets
+router = DefaultRouter()
+router.register(r'users', views.UserViewSet, basename='user')
+router.register(r'crops', views.CropViewSet, basename='crop')
+router.register(r'price-records', views.PriceRecordViewSet, basename='pricerecord')
+router.register(r'notifications', views.NotificationViewSet, basename='notification')
+router.register(r'market-posts', views.MarketPostViewSet, basename='marketpost')
+router.register(r'price-alerts', views.PriceAlertViewSet, basename='pricealert')
 
+# Define URL patterns
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    # Router URLs (includes all ViewSet endpoints)
+    path('', include(router.urls)),
+    
+    # APIView endpoints
+    path('demand/', views.DemandView.as_view(), name='demand'),
+    path('price-trend/<int:crop_id>/', views.PriceTrendView.as_view(), name='price-trend'),
+    path('market-average/', views.MarketAverageView.as_view(), name='market-average'),
+    path('crop-recommendation/', views.CropRecommendationView.as_view(), name='crop-recommendation'),
 ]
