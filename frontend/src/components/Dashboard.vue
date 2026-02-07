@@ -1,23 +1,23 @@
 <template>
   <div class="dashboard-wrapper">
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4 py-lg-5">
       <!-- Welcome Header -->
-      <div class="row mb-4">
+      <div class="row mb-4 mb-lg-5">
         <div class="col-12">
-          <div class="welcome-card bg-gradient-primary text-white p-4 rounded-3 shadow-sm">
+          <div class="welcome-card bg-gradient-primary text-white p-4 p-lg-5 rounded-4 shadow-lg">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
               <div>
-                <h2 class="fw-bold mb-2">
-                  <i class="bi bi-sun me-2"></i>
+                <h1 class="fw-bold mb-3 display-5">
+                  <i class="bi bi-sun me-2 me-lg-3"></i>
                   Welcome back, {{ farmerName }}!
-                </h2>
-                <p class="mb-0 opacity-90">
+                </h1>
+                <p class="mb-0 opacity-90 lead">
                   <i class="bi bi-calendar3 me-2"></i>
                   {{ currentDate }}
                 </p>
               </div>
               <div class="text-end">
-                <div class="badge bg-white text-primary px-3 py-2 fs-6">
+                <div class="badge bg-white text-primary px-4 py-3 fs-5">
                   <i class="bi bi-clipboard-data me-2"></i>
                   {{ totalCrops }} Crops Tracked
                 </div>
@@ -29,24 +29,29 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-5">
-        <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div class="d-flex flex-column align-items-center">
+          <div class="spinner-border text-success mb-4" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="text-center">
+            <h4 class="text-muted mb-2">Loading Your Dashboard</h4>
+            <p class="text-muted">Fetching your agricultural data...</p>
+          </div>
         </div>
-        <p class="text-muted mt-3">Loading your dashboard...</p>
       </div>
 
       <!-- Main Content -->
       <div v-else>
         <!-- Key Metrics -->
-        <div class="row g-4 mb-4">
+        <div class="row g-4 g-lg-5 mb-4 mb-lg-5">
           <!-- Total Crops -->
           <div class="col-12 col-md-6 col-xl-3">
-            <div class="metric-card card border-0 shadow-sm h-100">
-              <div class="card-body">
+            <div class="metric-card card border-0 shadow-lg h-100">
+              <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start">
                   <div>
-                    <p class="text-muted text-uppercase small fw-semibold mb-2">
-                      <i class="bi bi-tree me-1"></i>My Crops
+                    <p class="text-muted text-uppercase small fw-semibold mb-3">
+                      <i class="bi bi-tree me-2"></i>My Crops
                     </p>
                     <h3 class="fw-bold mb-1">{{ totalCrops }}</h3>
                     <small class="text-success">
@@ -544,20 +549,55 @@ export default {
   flex-shrink: 0;
 }
 
+<style scoped>
+.dashboard-wrapper {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+  border: none;
+  box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3);
+}
+
+.metric-card {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-color: #dee2e6;
+}
+
+.metric-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
 .region-item {
   background: rgba(13, 110, 253, 0.03);
   border: 1px solid rgba(13, 110, 253, 0.1);
   transition: all 0.3s ease;
+  border-radius: 0.75rem;
 }
 
 .region-item:hover {
   background: rgba(13, 110, 253, 0.08);
   transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .region-rank {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
   color: white;
   border-radius: 50%;
@@ -565,11 +605,18 @@ export default {
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 1.1rem;
 }
 
 .card {
-  border-radius: 12px;
+  border-radius: 1rem;
   animation: fadeIn 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {
@@ -584,24 +631,61 @@ export default {
 }
 
 .btn {
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.table th {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-}
-
+/* Mobile Responsive Enhancements */
 @media (max-width: 768px) {
-  .metric-card {
-    margin-bottom: 1rem;
+  .dashboard-wrapper {
+    padding: 1rem 0;
+  }
+  
+  .welcome-card {
+    padding: 2rem 1.5rem !important;
+  }
+  
+  .metric-card .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .metric-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+  
+  .region-rank {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-card {
+    padding: 1.5rem 1rem !important;
+  }
+  
+  .metric-card .card-body {
+    padding: 1rem !important;
+  }
+  
+  .metric-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.125rem;
+  }
+  
+  .region-rank {
+    width: 30px;
+    height: 30px;
+    font-size: 0.875rem;
   }
 }
 </style>

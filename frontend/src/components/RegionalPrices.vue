@@ -4,13 +4,12 @@
 
     <ul>
       <li v-for="r in regions" :key="r.region">
-        Region: {{ r.region }} – Avg Price: {{ r.avg_price }}
+        Region: {{ r.region }} Avg Price: {{ r.avg_price }}
       </li>
     </ul>
   </div>
 </template>
 
-<!-- 👇 THIS IS EXACTLY WHERE YOUR CODE GOES -->
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'

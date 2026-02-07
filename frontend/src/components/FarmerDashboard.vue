@@ -321,7 +321,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../axios';
 
 export default {
   data() {
@@ -347,32 +347,32 @@ export default {
   methods: {
     async loadDashboard() {
       this.loading = true;
-      const token = localStorage.getItem('token');
-
+      
       try {
-        // Fetch current user profile
-        const userRes = await axios.get('http://127.0.0.1:8000/api/users/me/', {
-          headers: { Authorization: `Bearer ${token}` }
+        // Test with a fresh token directly
+        console.log('🔄 Getting fresh token...');
+        const loginRes = await axios.post('/auth/login/', {
+          username: 'apk',
+          password: '1212'
         });
+        
+        const freshToken = loginRes.data.token;
+        console.log('🔑 Fresh token:', freshToken);
+        
+        // Use the fresh token for the request
+        const userRes = await axios.get('/users/me/', {
+          headers: { Authorization: `Bearer ${freshToken}` }
+        });
+        console.log('✅ User data received:', userRes.data);
         this.user = userRes.data;
 
         // Fetch all data in parallel
         const [cropsRes, pricesRes, notesRes, tipsRes, weatherRes] = await Promise.all([
-          axios.get(`http://127.0.0.1:8000/api/crops/?farmer=${this.user.id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          axios.get(`http://127.0.0.1:8000/api/price-records/?region=${this.user.region}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          axios.get(`http://127.0.0.1:8000/api/notifications/?user=${this.user.id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          axios.get(`http://127.0.0.1:8000/api/tips/?region=${this.user.region}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          axios.get(`http://127.0.0.1:8000/api/weather/?region=${this.user.region}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
+          axios.get(`/crops/?farmer=${this.user.id}`),
+          axios.get(`/price-records/?region=${this.user.region}`),
+          axios.get(`/notifications/?user=${this.user.id}`),
+          axios.get(`/tips/?region=${this.user.region}`),
+          axios.get(`/weather/?region=${this.user.region}`)
         ]);
 
         this.crops = cropsRes.data;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>🛠 Admin Dashboard</h2>
+    <h2> Admin Dashboard</h2>
     <p>Welcome, {{ user.username }}</p>
     <h3>Manage Users</h3>
     <ul>

@@ -1,15 +1,35 @@
 <template>
-  <div class="p-4">
-    <h2 class="text-xl font-bold mb-4">Price Trends</h2>
+  <div class="container py-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-pie-chart-fill me-2"></i>
+          Price Trends
+        </h5>
+      </div>
 
-    <div class="mb-4">
-      <label for="cropSelect" class="me-2 font-semibold">Select Crop:</label>
-      <select id="cropSelect" v-model="selectedCrop" @change="fetchTrends" class="border p-1 rounded">
-        <option v-for="crop in crops" :key="crop.id" :value="crop.id">{{ crop.name }}</option>
-      </select>
+      <div class="card-body">
+        <!-- Crop Selector -->
+        <div class="mb-3">
+          <label for="cropSelect" class="form-label fw-semibold">Select Crop:</label>
+          <select
+            id="cropSelect"
+            v-model="selectedCrop"
+            @change="fetchTrends"
+            class="form-select"
+          >
+            <option v-for="crop in crops" :key="crop.id" :value="crop.id">
+              {{ crop.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Chart -->
+        <div class="d-flex justify-content-center">
+          <canvas ref="trendChart" style="max-width: 500px;"></canvas>
+        </div>
+      </div>
     </div>
-
-    <canvas ref="trendChart"></canvas>
   </div>
 </template>
 
@@ -24,7 +44,6 @@ const chart = ref(null);
 const trendChart = ref(null);
 
 onMounted(async () => {
-  // Fetch crops from backend
   try {
     const res = await axios.get('http://127.0.0.1:8000/api/crops/');
     crops.value = res.data;
@@ -48,32 +67,37 @@ async function fetchTrends() {
     const labels = res.data.map(r => r.region);
     const prices = res.data.map(r => r.avg_price);
 
-    // Destroy previous chart
     if (chart.value) chart.value.destroy();
 
     const ctx = trendChart.value.getContext('2d');
     chart.value = new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels,
         datasets: [
           {
             label: 'Average Price',
             data: prices,
-            backgroundColor: 'rgba(34, 197, 94, 0.6)',
-            borderColor: 'rgba(34, 197, 94, 1)',
-            borderWidth: 1
+            backgroundColor: [
+              'rgba(4, 15, 10, 0.7)',   // Bootstrap green
+              'rgba(13, 110, 253, 0.7)',  // Bootstrap blue
+              'rgba(255, 193, 7, 0.7)',   // Bootstrap yellow
+              'rgba(220, 53, 69, 0.7)',   // Bootstrap red
+              'rgba(108, 117, 125, 0.7)'  // Bootstrap gray
+            ],
+            borderColor: '#fff',
+            borderWidth: 2
           }
         ]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: { display: true },
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 14 } }
+          },
           tooltip: { enabled: true }
-        },
-        scales: {
-          y: { beginAtZero: true }
         }
       }
     });
@@ -84,8 +108,7 @@ async function fetchTrends() {
 </script>
 
 <style scoped>
-/* Optional styling */
-select {
-  min-width: 200px;
+.card {
+  border-radius: 0.5rem;
 }
 </style>

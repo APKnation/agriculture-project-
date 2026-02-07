@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import User, Crop, PriceRecord, Notification, PriceAlert, MarketPost
+from .models import (
+    User, Crop, PriceRecord, Notification,
+    PriceAlert, MarketPost, DemandReport, RecommendationReport
+)
 
 # -----------------------------
 # User Admin
@@ -66,3 +69,9 @@ class MarketPostAdmin(admin.ModelAdmin):
     list_display = ('farmer', 'crop', 'quantity', 'price', 'contact')
     search_fields = ('farmer__username', 'crop__name', 'contact')
     list_filter = ('crop',)
+
+
+# -----------------------------
+# Proxy Models for Analytics (Demand, Recommendations)
+# -----------------------------
+

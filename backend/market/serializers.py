@@ -1,11 +1,40 @@
 from rest_framework import serializers
-from .models import User, Crop, PriceRecord, Notification, PriceAlert, MarketPost
+from .models import User, Crop, PriceRecord, Notification, PriceAlert, MarketPost, CropDocument
+
+
+# =========================
+# Crop Document Serializer
+# =========================
+class CropDocumentSerializer(serializers.ModelSerializer):
+    file_size_display = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = CropDocument
+        fields = [
+            'id', 'crop', 'title', 'file', 'uploaded_at', 
+            'file_type', 'file_size', 'file_size_display'
+        ]
+        read_only_fields = ['uploaded_at', 'file_type', 'file_size']
+    
+    def get_file_size_display(self, obj):
+        if obj.file_size:
+            # Convert bytes to human readable format
+            size = obj.file_size
+            for unit in ['B', 'KB', 'MB', 'GB']:
+                if size < 1024.0:
+                    return f"{size:.1f} {unit}"
+                size /= 1024.0
+            return f"{size:.1f} TB"
+        return "Unknown"
 
 
 # =========================
 # Crop Serializer
 # =========================
 class CropSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    documents = CropDocumentSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Crop
         fields = [
@@ -15,8 +44,19 @@ class CropSerializer(serializers.ModelSerializer):
             'planting_date',
             'expected_harvest_date',
             'yield_estimate',
-            'farmer'
+            'farmer',
+            'image',
+            'image_url',
+            'documents'
         ]
+    
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
 
 
 # =========================
@@ -25,6 +65,7 @@ class CropSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     # Include crops owned by this user
     owned_crops = CropSerializer(many=True, read_only=True)
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -35,9 +76,19 @@ class UserSerializer(serializers.ModelSerializer):
             'role',
             'region',
             'preferred_markets',
+            'profile_image',
+            'profile_image_url',
             'owned_crops'
         ]
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_profile_image_url(self, obj):
+        if obj.profile_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.profile_image.url)
+            return obj.profile_image.url
+        return None
 
     def create(self, validated_data):
         password = validated_data.pop('password')

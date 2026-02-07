@@ -12,9 +12,15 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    console.log('🔧 Axios interceptor - Token:', token ? 'Present' : 'Missing');
+    console.log('🔧 Axios interceptor - URL:', config.url);
+    console.log('🔧 Axios interceptor - Method:', config.method);
+    console.log('🔧 Axios interceptor - Headers before:', JSON.stringify(config.headers));
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('🔧 Axios interceptor - Header added:', config.headers.Authorization);
     }
+    console.log('🔧 Axios interceptor - Final headers:', JSON.stringify(config.headers));
     return config;
   },
   (error) => {

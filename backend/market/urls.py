@@ -1,24 +1,48 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
+from .views_file_upload import CropDocumentViewSet, CropImageViewSet, UserProfileImageViewSet
+from .views_weather import WeatherDataViewSet, WeatherRecommendationView, WeatherAnalyticsView
 
-# Create a router and register ViewSets
 router = DefaultRouter()
-router.register(r'users', views.UserViewSet, basename='user')
-router.register(r'crops', views.CropViewSet, basename='crop')
-router.register(r'price-records', views.PriceRecordViewSet, basename='pricerecord')
-router.register(r'notifications', views.NotificationViewSet, basename='notification')
-router.register(r'market-posts', views.MarketPostViewSet, basename='marketpost')
-router.register(r'price-alerts', views.PriceAlertViewSet, basename='pricealert')
+router.register(r'users', views.UserViewSet)
+router.register(r'crops', views.CropViewSet)
+router.register(r'price-records', views.PriceRecordViewSet)
+router.register(r'notifications', views.NotificationViewSet)
+router.register(r'market-posts', views.MarketPostViewSet)
+router.register(r'price-alerts', views.PriceAlertViewSet)
+router.register(r'crop-documents', CropDocumentViewSet, basename='crop-document')
+router.register(r'weather', WeatherDataViewSet, basename='weather')
 
-# Define URL patterns
 urlpatterns = [
+    # Authentication endpoints
+    path('auth/login/', views.login_view, name='login'),
+    path('auth/logout/', views.logout_view, name='logout'),
+    path('auth/register/', views.register_view, name='register'),
+    
     # Router URLs (includes all ViewSet endpoints)
     path('', include(router.urls)),
     
+    # File upload endpoints
+    path('crops/<int:pk>/upload-image/', CropImageViewSet.as_view({'post': 'upload_image'})),
+    path('crops/<int:pk>/delete-image/', CropImageViewSet.as_view({'delete': 'delete_image'})),
+    path('user/upload-profile-image/', UserProfileImageViewSet.as_view({'post': 'upload_profile_image'})),
+    path('user/delete-profile-image/', UserProfileImageViewSet.as_view({'delete': 'delete_profile_image'})),
+    
+    # Weather endpoints
+    path('weather/recommendations/', WeatherRecommendationView.as_view()),
+    path('weather/analytics/', WeatherAnalyticsView.as_view()),
+    
     # APIView endpoints
-    path('demand/', views.DemandView.as_view(), name='demand'),
-    path('price-trend/<int:crop_id>/', views.PriceTrendView.as_view(), name='price-trend'),
-    path('market-average/', views.MarketAverageView.as_view(), name='market-average'),
-    path('crop-recommendation/', views.CropRecommendationView.as_view(), name='crop-recommendation'),
+    path('demand/', views.DemandView.as_view()),
+    path('regions/', views.RegionsView.as_view()),
+    path('price-trends/<int:crop_id>/', views.PriceTrendView.as_view()),
+    path('market-averages/', views.MarketAverageView.as_view()),
+    path('crop-recommendations/', views.CropRecommendationView.as_view()),
+    
+    # Advanced Analytics endpoints
+    path('analytics/advanced/', views.AdvancedAnalyticsView.as_view()),
+    path('analytics/market-reports/', views.MarketReportView.as_view()),
+    path('analytics/yield/', views.YieldAnalyticsView.as_view()),
+    path('analytics/demand/', views.DemandAnalyticsView.as_view()),
 ]
