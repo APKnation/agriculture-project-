@@ -152,7 +152,7 @@ export default {
       logout
     }
   }
-};
+}
 </script>
 
 <style>

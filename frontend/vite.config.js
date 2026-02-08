@@ -18,9 +18,16 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
+    target: 'es2015',
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html')
+      input: resolve(__dirname, 'index.html'),
+      output: {
+        manualChunks: {
+          vue: ['vue'],
+          router: ['vue-router'],
+          charts: ['chart.js', 'vue-chartjs'],
+          bootstrap: ['bootstrap']
+        }
       }
     },
     chunkSizeWarningLimit: 1600,
@@ -29,5 +36,10 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src')
     }
+  },
+  define: {
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_DEVTOOLS__: false,
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   }
 })
