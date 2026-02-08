@@ -251,7 +251,7 @@ export default {
       this.error = null;
       
       try {
-        const res = await axios.get('http://127.0.0.1:8000/api/crops/');
+        const res = await axios.get('/crops/');
         console.log('Crops:', res.data);
         this.crops = res.data;
       } catch (err) {
@@ -269,7 +269,7 @@ export default {
       
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/api/price-records/?crop=${this.selectedCrop}`
+          `/price-records/?crop=${this.selectedCrop}`
         );
         console.log('Comparison:', res.data);
         this.comparison = res.data;

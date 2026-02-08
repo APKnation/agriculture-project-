@@ -4,10 +4,9 @@
     <MobileNavigation />
 
     <!-- Desktop Navbar -->
-    <nav v-if="showNavbar" class="navbar navbar-expand-lg navbar-dark bg-gradient-success shadow-lg d-none d-lg-block">
+    <nav v-if="showNavbar" class="navbar navbar-expand-lg navbar-dark shadow-lg d-none d-lg-block" style="background: var(--gradient-primary);">
       <div class="container">
-        <router-link to="/dashboard" class="navbar-brand fw-bold fs-4">
-          <i class="bi bi-tree-fill me-2"></i>
+        <router-link to="/dashboard" class="navbar-brand fw-bold fs-4 text-white">
           Smart Agri-Market
         </router-link>
 
@@ -19,78 +18,78 @@
           <ul class="navbar-nav ms-auto">
             <!-- Common Links -->
             <li class="nav-item">
-              <router-link to="/dashboard" class="nav-link">
-                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+              <router-link to="/dashboard" class="nav-link text-white">
+                Dashboard
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/marketplace" class="nav-link">
-                <i class="bi bi-shop me-1"></i>Marketplace
+              <router-link to="/marketplace" class="nav-link text-white">
+                Marketplace
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/price-trends" class="nav-link">
-                <i class="bi bi-graph-up me-1"></i>Price Trends
+              <router-link to="/price-trends" class="nav-link text-white">
+                Price Trends
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/demand" class="nav-link">
-                <i class="bi bi-bar-chart me-1"></i>Supply & Demand
+              <router-link to="/demand" class="nav-link text-white">
+                Supply & Demand
               </router-link>
             </li>
 
             <!-- Role-based Links -->
             <li v-if="userRole === 'farmer'" class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                <i class="bi bi-seedling me-1"></i>Farming Tools
+              <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                Farming Tools
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-menu-dark">
                 <li><router-link class="dropdown-item" to="/recommendations">
-                  <i class="bi bi-lightbulb me-2"></i>Recommendations
+                  Recommendations
                 </router-link></li>
                 <li><router-link class="dropdown-item" to="/weather">
-                  <i class="bi bi-cloud-sun me-2"></i>Weather
+                  Weather
                 </router-link></li>
               </ul>
             </li>
             <li v-if="userRole === 'officer'" class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                <i class="bi bi-clipboard-data me-1"></i>Analytics
+              <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                Analytics
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu dropdown-menu-dark">
                 <li><router-link class="dropdown-item" to="/reports">
-                  <i class="bi bi-file-text me-2"></i>Market Reports
+                  Market Reports
                 </router-link></li>
                 <li><router-link class="dropdown-item" to="/analytics">
-                  <i class="bi bi-graph-up-arrow me-2"></i>Advanced Analytics
+                  Advanced Analytics
                 </router-link></li>
               </ul>
             </li>
             <li v-if="userRole === 'admin'" class="nav-item">
-              <router-link to="/admin-panel" class="nav-link">
-                <i class="bi bi-gear me-1"></i>Admin Panel
+              <router-link to="/admin-panel" class="nav-link text-white">
+                Admin Panel
               </router-link>
             </li>
 
             <!-- Notifications & Profile -->
             <li class="nav-item">
-              <router-link to="/notifications" class="nav-link position-relative">
-                <i class="bi bi-bell me-1"></i>Notifications
+              <router-link to="/notifications" class="nav-link position-relative text-white">
+                Notifications
                 <span v-if="unreadCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {{ unreadCount }}
                 </span>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/profile" class="nav-link">
-                <i class="bi bi-person-circle me-1"></i>My Profile
+              <router-link to="/profile" class="nav-link text-white">
+                My Profile
               </router-link>
             </li>
 
             <!-- Logout -->
             <li class="nav-item">
               <button @click="logout" class="btn btn-sm btn-outline-light ms-2">
-                <i class="bi bi-box-arrow-right me-1"></i>Logout
+                Logout
               </button>
             </li>
           </ul>

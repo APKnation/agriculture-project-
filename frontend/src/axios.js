@@ -2,9 +2,10 @@ import axios from 'axios';
 import router from './router';
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: '/api/',
+  timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   }
 });
 
@@ -32,7 +33,13 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log('🚨 Axios Error Interceptor:');
+    console.log('Status:', error.response?.status);
+    console.log('URL:', error.config?.url);
+    console.log('Headers sent:', error.config?.headers);
+    
     if (error.response && error.response.status === 401) {
+      console.log('❌ 401 Unauthorized - Removing token and redirecting');
       localStorage.removeItem('token');
       localStorage.removeItem('refresh_token');
       router.push('/login');

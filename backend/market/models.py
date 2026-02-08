@@ -36,7 +36,22 @@ class RecommendationReport(models.Model):
 # Crop Model
 # -----------------------------
 class Crop(models.Model):
+    CROP_TYPES = (
+        ('vegetables', 'Vegetables'),
+        ('fruits', 'Fruits'),
+        ('grains', 'Grains'),
+        ('legumes', 'Legumes'),
+    )
+    
+    STATUS_CHOICES = (
+        ('planted', 'Planted'),
+        ('growing', 'Growing'),
+        ('harvested', 'Harvested'),
+    )
+    
     name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=CROP_TYPES, default='vegetables')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planted')
     description = models.TextField(blank=True, null=True)
     planting_date = models.DateField(null=True, blank=True)
     expected_harvest_date = models.DateField(null=True, blank=True)

@@ -4,22 +4,22 @@
       <!-- Welcome Header -->
       <div class="row mb-4">
         <div class="col-12">
-          <div class="welcome-hero bg-gradient-success text-white p-4 rounded-3 shadow-sm">
+          <div class="welcome-hero text-white p-4 rounded-3 shadow-sm" style="background: var(--gradient-success);">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
               <div>
                 <h2 class="fw-bold mb-2">
-                  <i class="bi bi-person-circle me-2"></i>
+                  
                   Farmer Dashboard
                 </h2>
                 <p v-if="user.username" class="mb-0 fs-5 opacity-90">
-                  <i class="bi bi-hand-thumbs-up me-2"></i>
+                  
                   Welcome, <strong>{{ user.username }}</strong> from <strong>{{ user.region }}</strong>
                 </p>
                 <p v-else class="mb-0 opacity-75">Loading your profile...</p>
               </div>
               <div class="text-end">
                 <div class="badge bg-white text-success px-3 py-2 fs-6">
-                  <i class="bi bi-calendar3 me-2"></i>
+                  
                   {{ currentDate }}
                 </div>
               </div>

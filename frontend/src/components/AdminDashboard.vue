@@ -17,9 +17,9 @@ export default {
     return { user: {}, users: [] };
   },
   async mounted() {
-    const userRes = await axios.get('http://127.0.0.1:8000/api/users/3/'); // example admin
+    const userRes = await axios.get('/users/3/'); // example admin
     this.user = userRes.data;
-    const usersRes = await axios.get('http://127.0.0.1:8000/api/users/');
+    const usersRes = await axios.get('/users/');
     this.users = usersRes.data;
   }
 };

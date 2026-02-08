@@ -217,21 +217,18 @@ const filteredPosts = computed(() => {
 
 onMounted(async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/market-posts/')
+    const res = await axios.get('/market-posts/')
     posts.value = res.data
   } catch (err) {
     console.error(err)
-    error.value = 'Failed to load marketplace posts.'
-  } finally {
-    loading.value = false
   }
 })
 
-const refreshMarketplace = async () => {
+const refreshPosts = async () => {
   loading.value = true
   error.value = null
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/market-posts/')
+    const res = await axios.get('/market-posts/')
     posts.value = res.data
   } catch (err) {
     console.error(err)

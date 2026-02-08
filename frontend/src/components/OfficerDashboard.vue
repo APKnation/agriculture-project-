@@ -1,23 +1,23 @@
 <template>
   <div class="officer-dashboard">
     <!-- Header Section -->
-    <div class="dashboard-header bg-gradient-success text-white p-4 mb-4 rounded-3 shadow-lg">
+    <div class="dashboard-header text-white p-4 mb-4 rounded-3 shadow-lg" style="background: var(--gradient-primary);">
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="col-md-6">
             <h1 class="mb-0 fw-bold">
-              <i class="bi bi-clipboard-data me-3"></i>
+              
               Market Officer Dashboard
             </h1>
           </div>
           <div class="col-md-6 text-md-end">
             <div class="user-info">
-              <span class="badge bg-white text-success fs-6 mb-2">
-                <i class="bi bi-person-circle me-2"></i>
+              <span class="badge bg-white text-primary fs-6 mb-2">
+                
                 {{ user.username }}
               </span>
               <div class="text-white-50">
-                <i class="bi bi-geo-alt me-1"></i>
+                
                 {{ user.region }} Region
               </div>
             </div>
@@ -153,7 +153,7 @@
                   <div>
                     <strong>{{ record.crop?.name || 'Unknown' }}</strong>
                     <div class="text-muted small">
-                      <i class="bi bi-geo-alt me-1"></i>
+                      
                       {{ record.region }}
                     </div>
                   </div>

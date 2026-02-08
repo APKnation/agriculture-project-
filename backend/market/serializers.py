@@ -34,21 +34,34 @@ class CropDocumentSerializer(serializers.ModelSerializer):
 class CropSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     documents = CropDocumentSerializer(many=True, read_only=True)
+    farmer_username = serializers.CharField(source='farmer.username', read_only=True)
     
     class Meta:
         model = Crop
         fields = [
             'id',
             'name',
+            'type',
+            'status',
             'description',
             'planting_date',
             'expected_harvest_date',
             'yield_estimate',
             'farmer',
+            'farmer_id',
+            'farmer_username',
             'image',
             'image_url',
             'documents'
         ]
+        extra_kwargs = {
+            'farmer': {'required': False},
+            'planting_date': {'required': False},
+            'expected_harvest_date': {'required': False},
+            'yield_estimate': {'required': False},
+            'description': {'required': False},
+            'image': {'required': False}
+        }
     
     def get_image_url(self, obj):
         if obj.image:

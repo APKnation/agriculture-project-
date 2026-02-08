@@ -111,21 +111,18 @@ const getLowDemandCount = computed(() => {
 
 onMounted(async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/demand/')
+    const res = await axios.get('/demand/')
     demand.value = res.data
   } catch (err) {
     console.error(err)
-    error.value = 'Failed to load demand insights.'
-  } finally {
-    loading.value = false
   }
 })
 
-const refreshDemand = async () => {
+const refreshData = async () => {
   loading.value = true
   error.value = null
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/demand/')
+    const res = await axios.get('/demand/')
     demand.value = res.data
   } catch (err) {
     console.error(err)

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // Import all components
 import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
 import Dashboard from "./components/Dashboard.vue";
 import FarmerDashboard from "./components/FarmerDashboard.vue";
 import OfficerDashboard from "./components/OfficerDashboard.vue";
@@ -12,6 +13,7 @@ import DemandInsights from "./components/DemandInsights.vue";
 import PriceComparison from "./components/PriceComparison.vue";
 import Notifications from "./components/Notifications.vue";
 import Profile from "./components/Profile.vue";
+import CropManagement from "./components/CropManagement.vue";
 
 // New advanced components
 import AdvancedAnalytics from "./components/AdvancedAnalytics.vue";
@@ -20,6 +22,7 @@ import WeatherDashboard from "./components/WeatherDashboard.vue";
 const routes = [
   { path: "/", redirect: "/dashboard" },
   { path: "/login", component: Login },
+  { path: "/register", component: Register },
 
   // Common dashboard (accessible to all logged-in users)
   { path: "/dashboard", component: Dashboard, meta: { requiresAuth: true } },
@@ -65,6 +68,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   { path: "/profile", component: Profile, meta: { requiresAuth: true } },
+  { path: "/crops", component: CropManagement, meta: { requiresAuth: true } },
 
   // New advanced features
   {
@@ -108,8 +112,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
+  
+  console.log('🛡️ Router Guard - Checking auth for:', to.path);
+  console.log('🔑 Token present:', !!token);
+  console.log('👤 User role:', userRole);
+  console.log('🔒 Requires auth:', to.meta.requiresAuth);
 
   if (to.meta.requiresAuth && !token) {
+    console.log('❌ No token found, redirecting to login');
     // Not logged in → redirect to login
     return next("/login");
   }

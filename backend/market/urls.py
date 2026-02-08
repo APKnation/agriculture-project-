@@ -16,9 +16,14 @@ router.register(r'weather', WeatherDataViewSet, basename='weather')
 
 urlpatterns = [
     # Authentication endpoints
-    path('auth/login/', views.login_view, name='login'),
-    path('auth/logout/', views.logout_view, name='logout'),
-    path('auth/register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('auth/login/', views.login_view, name='auth_login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('auth/logout/', views.logout_view, name='auth_logout'),
+    path('register/', views.register_view, name='register'),
+    path('auth/register/', views.register_view, name='auth_register'),
+    path('change-password/', views.change_password_view, name='change_password'),
+    path('auth/change-password/', views.change_password_view, name='auth_change_password'),
     
     # Router URLs (includes all ViewSet endpoints)
     path('', include(router.urls)),
@@ -26,6 +31,8 @@ urlpatterns = [
     # File upload endpoints
     path('crops/<int:pk>/upload-image/', CropImageViewSet.as_view({'post': 'upload_image'})),
     path('crops/<int:pk>/delete-image/', CropImageViewSet.as_view({'delete': 'delete_image'})),
+    path('crops/<int:pk>/upload-image/', views.CropViewSet.as_view({'post': 'upload_image'})),
+    path('crops/<int:pk>/delete-image/', views.CropViewSet.as_view({'delete': 'delete_image'})),
     path('user/upload-profile-image/', UserProfileImageViewSet.as_view({'post': 'upload_profile_image'})),
     path('user/delete-profile-image/', UserProfileImageViewSet.as_view({'delete': 'delete_profile_image'})),
     

@@ -1,12 +1,12 @@
 <template>
   <div class="notifications-dashboard">
     <!-- Header Section -->
-    <div class="dashboard-header bg-gradient-info text-white p-4 mb-4 rounded-3 shadow-lg">
+    <div class="dashboard-header text-white p-4 mb-4 rounded-3 shadow-lg" style="background: var(--gradient-info);">
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="col-md-6">
             <h1 class="mb-0 fw-bold">
-              <i class="bi bi-bell me-3"></i>
+              
               Notifications Center
             </h1>
           </div>
@@ -14,14 +14,14 @@
             <div class="notification-stats d-flex gap-3 justify-content-md-end">
               <div class="text-center">
                 <div class="badge bg-white text-info fs-6 mb-1">
-                  <i class="bi bi-envelope me-1"></i>
+                  
                   {{ totalNotifications }}
                 </div>
                 <small class="text-white-50">Total</small>
               </div>
               <div class="text-center">
                 <div class="badge bg-white text-warning fs-6 mb-1">
-                  <i class="bi bi-exclamation-circle me-1"></i>
+                  
                   {{ unreadCount }}
                 </div>
                 <small class="text-white-50">Unread</small>

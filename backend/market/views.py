@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, parsers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view, permission_classes
@@ -12,7 +12,7 @@ from django.utils import timezone
 from itertools import count
 from decimal import Decimal
 
-from .models import User as CustomUser, Crop, PriceRecord, Notification, MarketPost, PriceAlert
+from .models import User, Crop, PriceRecord, Notification, MarketPost, PriceAlert
 from .serializers import (
     UserSerializer, CropSerializer, PriceRecordSerializer,
     NotificationSerializer, MarketPostSerializer, PriceAlertSerializer
@@ -38,7 +38,7 @@ def login_view(request):
         }, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        user = CustomUser.objects.get(username=username)
+        user = User.objects.get(username=username)
         if user.check_password(password):
             refresh = RefreshToken.for_user(user)
             return Response({
@@ -51,7 +51,7 @@ def login_view(request):
             return Response({
                 'error': 'Invalid credentials'
             }, status=status.HTTP_401_UNAUTHORIZED)
-    except CustomUser.DoesNotExist:
+    except User.DoesNotExist:
         return Response({
             'error': 'User not found'
         }, status=status.HTTP_401_UNAUTHORIZED)
@@ -83,13 +83,65 @@ def register_view(request):
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def change_password_view(request):
+    current_password = request.data.get('current_password')
+    new_password = request.data.get('new_password')
+    
+    if not current_password or not new_password:
+        return Response({
+            'error': 'Current password and new password are required'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        user = request.user
+        if not user.check_password(current_password):
+            return Response({
+                'error': 'Current password is incorrect'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.set_password(new_password)
+        user.save()
+        return Response({'message': 'Password changed successfully'})
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def user_stats(request):
+    user = request.user
+    
+    # Get user's crops count
+    total_crops = Crop.objects.filter(farmer=user).count()
+    
+    # Get user's price records count
+    total_price_records = PriceRecord.objects.filter(crop__farmer=user).count()
+    
+    # Get unread notifications count
+    unread_notifications = Notification.objects.filter(user=user, read=False).count()
+    
+    # Calculate days active (since registration)
+    days_active = (timezone.now() - user.date_joined).days
+    
+    return Response({
+        'totalCrops': total_crops,
+        'totalPriceRecords': total_price_records,
+        'notifications': unread_notifications,
+        'daysActive': days_active
+    })
+
 # =========================
 # User / Crop / Price / Notification
 # =========================
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [CanManageUsers]
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [permissions.IsAuthenticated()]
+        return [CanManageUsers()]
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def me(self, request):
@@ -103,22 +155,56 @@ class UserViewSet(viewsets.ModelViewSet):
 class CropViewSet(viewsets.ModelViewSet):
     queryset = Crop.objects.all()
     serializer_class = CropSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    parser_classes = [parsers.JSONParser, parsers.MultiPartParser, parsers.FormParser]
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            self.permission_classes = [IsFarmer, IsOwnerOrReadOnly]
+            self.permission_classes = [permissions.IsAuthenticated]
+        else:
+            self.permission_classes = [permissions.AllowAny]
         return super().get_permissions()
 
     def get_queryset(self):
-        queryset = Crop.objects.all()
-        farmer_id = self.request.query_params.get('farmer')
-        if farmer_id:
-            queryset = queryset.filter(farmer_id=farmer_id)
-        return queryset
+        return Crop.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(farmer=self.request.user)
+        # Set farmer to current user
+        try:
+            print("Creating crop with data:", serializer.validated_data)
+            crop = serializer.save(farmer=self.request.user)
+            print("Crop created successfully:", crop)
+            return crop
+        except Exception as e:
+            print("Error creating crop:", str(e))
+            print("Error details:", e.__class__.__name__)
+            raise e
+
+    def perform_update(self, serializer):
+        # Ensure farmer is set to current user
+        try:
+            print("Updating crop with data:", serializer.validated_data)
+            # Remove farmer from validated_data if it exists
+            validated_data = serializer.validated_data.copy()
+            if 'farmer' in validated_data:
+                del validated_data['farmer']
+            crop = serializer.save(farmer=self.request.user, **validated_data)
+            print("Crop updated successfully:", crop)
+            return crop
+        except Exception as e:
+            print("Error updating crop:", str(e))
+            print("Error details:", e.__class__.__name__)
+            print("Serializer errors:", getattr(serializer, 'errors', 'No errors'))
+            raise e
+        return serializer
+
+    @action(detail=True, methods=['post'])
+    def upload_image(self, request, pk=None):
+        crop = self.get_object()
+        if 'image' in request.FILES:
+            crop.image = request.FILES['image']
+            crop.save()
+            return Response({'message': 'Image uploaded successfully', 'image_url': crop.image.url if crop.image else None})
+        return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PriceRecordViewSet(viewsets.ModelViewSet):

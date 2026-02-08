@@ -238,7 +238,7 @@
                         <i class="bi bi-info-circle-fill"></i>
                       </div>
                       <div class="flex-grow-1">
-                        <h6 class="mb-1 fw-semibold">{{ notification.crop.name }}</h6>
+                        <h6 class="mb-1 fw-semibold">{{ notification.crop?.name || 'System Notification' }}</h6>
                         <p class="mb-1 small">{{ notification.message }}</p>
                         <small class="text-muted">
                           <i class="bi bi-clock me-1"></i>
@@ -382,22 +382,37 @@ export default {
       try {
         // Fetch all data in parallel
         const [cropsRes, notificationsRes, priceRecordsRes] = await Promise.all([
-          axios.get('http://127.0.0.1:8000/api/crops/'),
-          axios.get('http://127.0.0.1:8000/api/notifications/'),
-          axios.get('http://127.0.0.1:8000/api/price-records/')
+          axios.get('/crops/'),
+          axios.get('/notifications/'),
+          axios.get('/price-records/')
         ]);
 
         // Store data
-        this.crops = cropsRes.data;
-        this.notifications = notificationsRes.data;
-        this.priceRecords = priceRecordsRes.data;
+        this.crops = Array.isArray(cropsRes.data) ? cropsRes.data : [];
+        this.notifications = Array.isArray(notificationsRes.data) ? notificationsRes.data : [];
+        this.priceRecords = Array.isArray(priceRecordsRes.data) ? priceRecordsRes.data : [];
+
+        console.log('📊 Dashboard data loaded:');
+        console.log('Crops:', this.crops.length);
+        console.log('Notifications:', this.notifications.length);
+        console.log('Price Records:', this.priceRecords.length);
 
         // Calculate metrics
         this.calculateMetrics();
         
       } catch (error) {
         console.error('Error loading dashboard data:', error);
-        this.$router.push('/login');
+        console.error('Error details:', error.response?.data || error.message);
+        
+        // Don't automatically redirect to login on data loading errors
+        // Only redirect on authentication errors (401)
+        if (error.response?.status === 401) {
+          console.log('🔐 Authentication error - redirecting to login');
+          this.$router.push('/login');
+        } else {
+          console.log('📊 Data loading error - showing error message');
+          this.errorMessage = 'Failed to load dashboard data. Please try refreshing the page.';
+        }
       } finally {
         this.loading = false;
       }
