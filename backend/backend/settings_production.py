@@ -127,8 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'market.User'
 
 # CORS settings for production
-frontend_url = os.environ.get('FRONTEND_URL', 'https://agriculture-project-9-nvhd.onrender.com')
-netlify_url = 'https://agriculture-project-9-nvhd.onrender.com'  # Your Netlify domain
+frontend_url = os.environ.get('FRONTEND_URL', 'https://kilimo.netlify.app')
+netlify_url = 'https://kilimo.netlify.app'  # Your specific Netlify domain
 
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
@@ -136,6 +136,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://*.onrender.com",  # Allow all Render domains
     "https://*.netlify.app",   # Allow all Netlify domains
 ]
+
+# Allow all origins for development (can be restricted later)
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary fix for testing
 
 # CSRF settings for production
 CSRF_TRUSTED_ORIGINS = [
