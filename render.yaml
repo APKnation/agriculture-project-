@@ -22,9 +22,9 @@ services:
       - key: FRONTEND_URL
         value: "https://kilimo.netlify.app"
       - key: CORS_ALLOWED_ORIGINS
-        value: "https://kilimo.netlify.app,http://localhost:4173,http://localhost:5173"
+        value: "https://kilimo.netlify.app,http://localhost:4173,http://localhost:5173,http://127.0.0.1:4173,http://127.0.0.1:5173,https://*.onrender.com,https://*.netlify.app"
       - key: CSRF_TRUSTED_ORIGINS
-        value: "https://kilimo.netlify.app,http://localhost:4173,http://localhost:5173"
+        value: "https://kilimo.netlify.app,http://localhost:4173,http://localhost:5173,https://*.onrender.com,https://*.netlify.app"
 
   # PostgreSQL Database
   - type: pserv
