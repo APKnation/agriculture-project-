@@ -182,12 +182,16 @@ AUTHENTICATION_BACKENDS = [
 
 # Cache Configuration (Using local memory cache until Redis is available)
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-        'TIMEOUT': 300,  # Default timeout in seconds
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",  # Redis server address & DB number
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "TIMEOUT": 300,  # Optional: cache timeout in seconds
     }
 }
+
 
 # Session Configuration
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
