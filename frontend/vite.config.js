@@ -23,11 +23,11 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       input: resolve(__dirname, 'index.html'),
-      external: [],
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        assetFileNames: 'assets/[name].[ext]',
+        format: 'es' // Ensure ES modules
       }
     },
     chunkSizeWarningLimit: 1000,
@@ -44,5 +44,9 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['vue', 'vue-router', 'axios', 'pinia']
+  },
+  // Ensure proper module resolution
+  esbuild: {
+    target: 'es2015'
   }
 })
