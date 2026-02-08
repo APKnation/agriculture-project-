@@ -23,6 +23,7 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       input: resolve(__dirname, 'index.html'),
+      external: [],
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
