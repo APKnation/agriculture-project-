@@ -1,62 +1,56 @@
-import axios from 'axios';
-import router from './router';
+import axios from 'axios'
+import router from './router'
 
-// Determine API base URL based on environment
-const getBaseURL = () => {
-  if (import.meta.env.PROD) {
-    // Production: Use the deployed backend URL
-    return 'https://agriculture-project-9-nvhd.onrender.com/api/';
-  } else {
-    // Development: Use proxy
-    return '/api/';
-  }
-};
-
+// Always use the deployed backend URL for development and production
 const apiClient = axios.create({
-  baseURL: getBaseURL(),
+  baseURL: 'https://agriculture-project-9-nvhd.onrender.com/api/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }
-});
+})
 
-// Add token to every request
+// Request interceptor to add JWT token
 apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    console.log('🔧 Axios interceptor - Token:', token ? 'Present' : 'Missing');
-    console.log('🔧 Axios interceptor - URL:', config.url);
-    console.log('🔧 Axios interceptor - Method:', config.method);
-    console.log('🔧 Axios interceptor - Headers before:', JSON.stringify(config.headers));
+  config => {
+    const token = localStorage.getItem('token')
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      console.log('🔧 Axios interceptor - Header added:', config.headers.Authorization);
+      config.headers.Authorization = `Bearer ${token}`
     }
-    console.log('🔧 Axios interceptor - Final headers:', JSON.stringify(config.headers));
-    return config;
+    return config
   },
-  (error) => {
-    return Promise.reject(error);
+  error => {
+    return Promise.reject(error)
   }
-);
+)
 
-// Handle 401 errors (token expired)
+// Response interceptor to handle token expiration
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.log('🚨 Axios Error Interceptor:');
-    console.log('Status:', error.response?.status);
-    console.log('URL:', error.config?.url);
-    console.log('Headers sent:', error.config?.headers);
-    
-    if (error.response && error.response.status === 401) {
-      console.log('❌ 401 Unauthorized - Removing token and redirecting');
-      localStorage.removeItem('token');
-      localStorage.removeItem('refresh_token');
-      router.push('/login');
+  response => response,
+  async error => {
+    const originalRequest = error.config
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+      const refreshToken = localStorage.getItem('refresh')
+      if (refreshToken) {
+        try {
+          const response = await axios.post('https://agriculture-project-9-nvhd.onrender.com/api/token/refresh/', { refresh: refreshToken })
+          const newToken = response.data.access
+          localStorage.setItem('token', newToken)
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
+          return apiClient(originalRequest)
+        } catch (e) {
+          console.error('Refresh token failed', e)
+          localStorage.clear()
+          router.push('/login')
+        }
+      } else {
+        localStorage.clear()
+        router.push('/login')
+      }
     }
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
-export default apiClient;
+export default apiClient
