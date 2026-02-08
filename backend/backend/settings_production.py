@@ -167,7 +167,7 @@ if os.environ.get('REDIS_URL'):
         }
     }
 else:
-    # Fallback to local memory cache
+    # Fallback to local memory cache if Redis is not available
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
