@@ -140,7 +140,7 @@ CORS_ALLOWED_ORIGINS = [
 # Allow all origins for development (can be restricted later)
 CORS_ALLOW_ALL_ORIGINS = True  # Temporary fix for testing
 
-# CSRF settings for production
+# CSRF settings for production - CRITICAL FIX
 CSRF_TRUSTED_ORIGINS = [
     frontend_url,
     netlify_url,
@@ -148,12 +148,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.netlify.app",   # Allow all Netlify domains
 ]
 
-# Session and CSRF security
-SESSION_COOKIE_SECURE = True
+# Additional CSRF settings for SPA
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None'  # Required for cross-origin requests
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin requests
 
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-eval'", frontend_url)
 
