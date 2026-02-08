@@ -4,7 +4,7 @@ import router from './router'
 // Always use the deployed backend URL for development and production
 const apiClient = axios.create({
   baseURL: 'https://agriculture-project-9-nvhd.onrender.com/api/',
-  timeout: 10000,
+  timeout: 30000, // Increased timeout to 30 seconds
   headers: {
     'Content-Type': 'application/json'
   }

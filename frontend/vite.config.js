@@ -23,9 +23,7 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       input: resolve(__dirname, 'index.html'),
-      external: [],
       output: {
-        manualChunks: undefined, // Disable manual chunks for simpler build
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]'
@@ -44,6 +42,6 @@ export default defineConfig({
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   },
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'axios']
+    include: ['vue', 'vue-router', 'axios', 'pinia']
   }
 })
