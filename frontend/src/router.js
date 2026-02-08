@@ -20,7 +20,16 @@ import AdvancedAnalytics from "./components/AdvancedAnalytics.vue";
 import WeatherDashboard from "./components/WeatherDashboard.vue";
 
 const routes = [
-  { path: "/", redirect: "/dashboard" },
+  // Root path - redirect based on authentication
+  { path: "/", redirect: to => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      return "/dashboard";
+    } else {
+      return "/login";
+    }
+  }},
+  
   { path: "/login", component: Login },
   { path: "/register", component: Register },
 
@@ -99,8 +108,8 @@ const routes = [
     meta: { requiresAuth: true, role: "admin" },
   },
 
-  // Catch-all redirect to dashboard
-  { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
+  // Catch-all redirect to login (more robust)
+  { path: "/:pathMatch(.*)*", redirect: "/login" },
 ];
 
 const router = createRouter({
