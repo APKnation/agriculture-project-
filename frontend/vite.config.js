@@ -19,18 +19,18 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     target: 'es2015',
+    minify: 'esbuild',
     rollupOptions: {
       input: resolve(__dirname, 'index.html'),
+      external: [],
       output: {
-        manualChunks: {
-          vue: ['vue'],
-          router: ['vue-router'],
-          charts: ['chart.js', 'vue-chartjs'],
-          bootstrap: ['bootstrap']
-        }
+        manualChunks: undefined, // Disable manual chunks for simpler build
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       }
     },
-    chunkSizeWarningLimit: 1600,
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: {
@@ -41,5 +41,8 @@ export default defineConfig({
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_DEVTOOLS__: false,
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
+  },
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'axios']
   }
 })
