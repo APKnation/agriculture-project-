@@ -2,10 +2,10 @@ services:
   # Backend Django Service
   - type: web
     name: agriculture-backend
-    env: python
+    env: docker
     plan: free
-    buildCommand: "cd backend && python -m pip install --upgrade pip && pip install -r requirements.txt"
-    startCommand: "cd backend && python manage.py runserver 0.0.0.0:$PORT"
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     envVars:
       - key: DEBUG
         value: "False"
