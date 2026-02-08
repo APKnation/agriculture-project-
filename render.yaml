@@ -25,7 +25,9 @@ services:
       - key: ALLOWED_HOSTS
         value: "agriculture-backend.onrender.com"
       - key: FRONTEND_URL
-        value: "https://agriculture-frontend.onrender.com"
+        value: "https://agriculture-project-9-nvhd.onrender.com"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://agriculture-project-9-nvhd.onrender.com"
 
   # PostgreSQL Database
   - type: pserv
@@ -51,3 +53,5 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://agriculture-backend.onrender.com/api
+      - key: FRONTEND_URL
+        value: https://agriculture-project-9-nvhd.onrender.com

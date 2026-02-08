@@ -127,11 +127,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'market.User'
 
 # CORS settings for production
-frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
+frontend_url = os.environ.get('FRONTEND_URL', 'https://agriculture-project-9-nvhd.onrender.com')
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
-    "https://*.onrender.com",  # Allow Render domains
+    "https://*.onrender.com",  # Allow all Render domains
 ]
+
+# CSRF settings for production
+CSRF_TRUSTED_ORIGINS = [
+    frontend_url,
+    "https://*.onrender.com",  # Allow all Render domains
+]
+
+# Session and CSRF security
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-eval'", frontend_url)
 
 # JWT Settings
