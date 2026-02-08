@@ -8,7 +8,15 @@ agriculture/
 ├── 📄 netlify.toml               # Netlify deployment configuration
 ├── 📄 render.yaml                # Render deployment configuration
 ├── 📄 requirements.txt           # Backend Python dependencies
-├── 🗂️ backend/                   # Django backend application
+├── � PROJECT_STRUCTURE.md       # Project documentation
+├── 🗂️ scripts/                   # Utility and deployment scripts
+│   ├── 📄 complete-frontend-fix.sh    # Frontend build and fix script
+│   ├── 📄 complete-netlify-fix.sh    # Netlify deployment script
+│   ├── 📄 manual-deploy.sh           # Manual deployment guide
+│   ├── 📄 test-built-frontend.sh     # Frontend testing script
+│   ├── 📄 test-cors.sh              # CORS testing script
+│   └── 📄 wait-for-cors-fix.sh      # CORS monitoring script
+├── �🗂️ backend/                   # Django backend application
 │   ├── 📄 requirements.txt       # Backend dependencies
 │   ├── 📄 Procfile              # Render deployment process
 │   ├── 🗂️ backend/              # Django app settings
@@ -27,7 +35,6 @@ agriculture/
     ├── 📄 vite.config.js        # Vite build configuration
     ├── 📄 index.html            # Frontend entry point
     ├── 🗂️ public/               # Static assets
-    │   ├── 📄 vite.svg
     │   └── 📄 redirects         # Netlify SPA routing
     ├── 🗂️ src/                  # Vue.js source code
     │   ├── 📄 main.js           # App initialization
