@@ -128,15 +128,21 @@ AUTH_USER_MODEL = 'market.User'
 
 # CORS settings for production
 frontend_url = os.environ.get('FRONTEND_URL', 'https://agriculture-project-9-nvhd.onrender.com')
+netlify_url = 'https://agriculture-project-9-nvhd.onrender.com'  # Your Netlify domain
+
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
+    netlify_url,
     "https://*.onrender.com",  # Allow all Render domains
+    "https://*.netlify.app",   # Allow all Netlify domains
 ]
 
 # CSRF settings for production
 CSRF_TRUSTED_ORIGINS = [
     frontend_url,
+    netlify_url,
     "https://*.onrender.com",  # Allow all Render domains
+    "https://*.netlify.app",   # Allow all Netlify domains
 ]
 
 # Session and CSRF security

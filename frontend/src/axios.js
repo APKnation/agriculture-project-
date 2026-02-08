@@ -4,8 +4,8 @@ import router from './router';
 // Determine API base URL based on environment
 const getBaseURL = () => {
   if (import.meta.env.PROD) {
-    // Production: Use the deployed backend URL or environment variable
-    return import.meta.env.VITE_API_URL || '/api/';
+    // Production: Use the deployed backend URL
+    return 'https://agriculture-project-9-nvhd.onrender.com/api/';
   } else {
     // Development: Use proxy
     return '/api/';
