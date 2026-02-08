@@ -133,8 +133,12 @@ netlify_url = 'https://kilimo.netlify.app'  # Your specific Netlify domain
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
     netlify_url,
-    "https://*.onrender.com",  # Allow all Render domains
-    "https://*.netlify.app",   # Allow all Netlify domains
+    "http://localhost:4173",      # Local preview server
+    "http://localhost:5173",      # Local dev server
+    "http://127.0.0.1:4173",      # Local preview server (IP)
+    "http://127.0.0.1:5173",      # Local dev server (IP)
+    "https://*.onrender.com",     # Allow all Render domains
+    "https://*.netlify.app",      # Allow all Netlify domains
 ]
 
 # Allow all origins for development (can be restricted later)
@@ -144,8 +148,10 @@ CORS_ALLOW_ALL_ORIGINS = True  # Temporary fix for testing
 CSRF_TRUSTED_ORIGINS = [
     frontend_url,
     netlify_url,
-    "https://*.onrender.com",  # Allow all Render domains
-    "https://*.netlify.app",   # Allow all Netlify domains
+    "http://localhost:4173",      # Local preview server
+    "http://localhost:5173",      # Local dev server
+    "https://*.onrender.com",     # Allow all Render domains
+    "https://*.netlify.app",      # Allow all Netlify domains
 ]
 
 # Additional CSRF settings for SPA
