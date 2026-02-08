@@ -4,7 +4,7 @@ services:
     name: agriculture-backend
     env: python
     plan: free
-    buildCommand: "python -m pip install --upgrade pip && pip install -r requirements.txt"
+    buildCommand: "cd backend && python -m pip install --upgrade pip && pip install -r requirements.txt"
     startCommand: "gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT --env DJANGO_SETTINGS_MODULE=backend.settings_production"
     envVars:
       - key: DEBUG
