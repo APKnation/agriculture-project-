@@ -1,8 +1,19 @@
 import axios from 'axios';
 import router from './router';
 
+// Determine API base URL based on environment
+const getBaseURL = () => {
+  if (import.meta.env.PROD) {
+    // Production: Use the deployed backend URL or environment variable
+    return import.meta.env.VITE_API_URL || '/api/';
+  } else {
+    // Development: Use proxy
+    return '/api/';
+  }
+};
+
 const apiClient = axios.create({
-  baseURL: '/api/',
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
