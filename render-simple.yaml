@@ -5,7 +5,7 @@ services:
     env: python
     plan: free
     buildCommand: "python -m pip install --upgrade pip && pip install -r requirements.txt"
-    startCommand: "gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT --env DJANGO_SETTINGS_MODULE=backend.settings_production"
+    startCommand: "python manage.py runserver 0.0.0.0:$PORT"
     envVars:
       - key: DEBUG
         value: "False"
@@ -17,15 +17,8 @@ services:
         fromDatabase:
           name: agriculture-db
           property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: agriculture-redis
-          property: connectionString
       - key: ALLOWED_HOSTS
-        value: "agriculture-backend.onrender.com"
-      - key: FRONTEND_URL
-        value: "https://agriculture-frontend.onrender.com"
+        value: "*"
 
   # PostgreSQL Database
   - type: pserv
@@ -34,12 +27,6 @@ services:
     plan: free
     databases:
       - name: agriculture_db
-
-  # Redis Cache
-  - type: redis
-    name: agriculture-redis
-    plan: free
-    ipAllowList: []
 
   # Frontend Vue.js Service
   - type: web
