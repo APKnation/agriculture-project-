@@ -8,12 +8,13 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (including curl for health check)
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
         build-essential \
         libpq-dev \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -24,11 +25,19 @@ RUN pip install --upgrade pip \
 # Copy project
 COPY . /app/
 
-# Create media directory
+# Copy startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Create media directories
 RUN mkdir -p /app/media/profile_images /app/media/crop_images
 
 # Expose port
 EXPOSE $PORT
 
-# Run the application
-CMD exec gunicorn --bind :$PORT --workers 3 --threads 3 backend.wsgi:application
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:$PORT/api/ || exit 1
+
+# Run the startup script
+CMD ["/start.sh"]
