@@ -21,7 +21,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wti+r!1gzb30d!d()5$+s
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 # Production allowed hosts
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS += [
+    'localhost', 
+    '127.0.0.1', 
+    'agriculture-backend.onrender.com', 
+    'agriculture-project-9-nvhd.onrender.com'
+]
 
 # Application definition
 INSTALLED_APPS = [
