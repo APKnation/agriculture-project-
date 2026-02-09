@@ -90,51 +90,68 @@ export default {
   },
   methods: {
     async handleLogin() {
-      console.log('🔑 Login button clicked!');
-      console.log('👤 Username:', this.username);
-      console.log('🔑 Password:', this.password ? '***' : 'empty');
+      console.log('🔑 Login button clicked!')
+      console.log('👤 Username:', this.username)
+      console.log('🔑 Password:', this.password ? '***' : 'empty')
       
       if (!this.username || !this.password) {
-        this.errorMessage = 'Please enter both username and password';
-        return;
+        this.errorMessage = 'Please enter both username and password'
+        return
       }
 
-      this.loading = true;
+      this.loading = true
       try {
-        console.log('🌐 Making API call to: /login/');
-        const response = await axios.post('/login/', {
+        console.log('🌐 Making API call to login endpoint...')
+        
+        // Use the configured API client
+        const response = await this.$axios.post('/login/', {
           username: this.username,
           password: this.password
-        });
+        })
         
-        console.log('📨 API Response:', response);
-        console.log('📨 Response data:', response.data);
-        console.log('📨 Response status:', response.status);
+        console.log('📨 API Response:', response)
+        console.log('📨 Response data:', response.data)
+        console.log('📨 Response status:', response.status)
 
         if (response.data.token) {
-          console.log('🔑 Login successful - Token:', response.data.token);
-          console.log('👤 User role:', response.data.role);
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('role', response.data.role);
-          console.log('💾 Token stored in localStorage');
-          console.log('🔍 Checking stored token:', localStorage.getItem('token'));
-          this.$router.push('/dashboard');
+          console.log('🔑 Login successful - Token:', response.data.token)
+          console.log('👤 User role:', response.data.role)
+          
+          // Store authentication data
+          localStorage.setItem('token', response.data.token)
+          localStorage.setItem('refresh', response.data.refresh)
+          localStorage.setItem('role', response.data.role)
+          localStorage.setItem('user', JSON.stringify(response.data.user))
+          
+          console.log('💾 Token stored in localStorage')
+          console.log('🔍 Checking stored token:', localStorage.getItem('token'))
+          
+          // Redirect to dashboard
+          this.$router.push('/dashboard')
         } else {
-          console.log('❌ Login failed - No token in response');
-          this.errorMessage = response.data.message || 'Login failed';
+          console.log('❌ Login failed - No token in response')
+          this.errorMessage = response.data.message || 'Login failed'
         }
       } catch (error) {
-        console.log('💥 Login error details:', error);
-        console.log('💥 Error message:', error.message);
-        console.log('💥 Error response:', error.response);
-        console.log('💥 Error status:', error.response?.status);
-        console.log('💥 Error data:', error.response?.data);
+        console.log('💥 Login error details:', error)
+        console.log('💥 Error message:', error.message)
+        console.log('💥 Error response:', error.response)
+        console.log('💥 Error status:', error.response?.status)
+        console.log('💥 Error data:', error.response?.data)
         
-        this.errorMessage = 'Login failed. Please try again.';
-        console.error('Login error:', error);
+        // Show specific error message
+        if (error.response?.data?.error) {
+          this.errorMessage = error.response.data.error
+        } else if (error.response?.data?.detail) {
+          this.errorMessage = error.response.data.detail
+        } else if (error.message === 'Network Error') {
+          this.errorMessage = 'Cannot connect to server. Please check your internet connection.'
+        } else {
+          this.errorMessage = 'Login failed. Please try again.'
+        }
       } finally {
-        this.loading = false;
-        console.log('🏁 Login process completed');
+        this.loading = false
+        console.log('🏁 Login process completed')
       }
     }
   }
