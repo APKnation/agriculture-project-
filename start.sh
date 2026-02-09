@@ -8,6 +8,10 @@ echo "🚀 Starting Django application..."
 # Change to backend directory
 cd /app/backend
 
+# Ensure production settings are used
+export DJANGO_SETTINGS_MODULE=backend.settings_production
+echo "🔧 Using settings: $DJANGO_SETTINGS_MODULE"
+
 # Wait for database to be ready
 echo "⏳ Waiting for database..."
 python manage.py check --deploy || echo "⚠️ Database check failed, continuing anyway..."
