@@ -90,6 +90,10 @@ export default {
   },
   methods: {
     async handleLogin() {
+      console.log('🔑 Login button clicked!');
+      console.log('👤 Username:', this.username);
+      console.log('🔑 Password:', this.password ? '***' : 'empty');
+      
       if (!this.username || !this.password) {
         this.errorMessage = 'Please enter both username and password';
         return;
@@ -97,10 +101,15 @@ export default {
 
       this.loading = true;
       try {
+        console.log('🌐 Making API call to: /login/');
         const response = await axios.post('/login/', {
           username: this.username,
           password: this.password
         });
+        
+        console.log('📨 API Response:', response);
+        console.log('📨 Response data:', response.data);
+        console.log('📨 Response status:', response.status);
 
         if (response.data.token) {
           console.log('🔑 Login successful - Token:', response.data.token);
@@ -111,13 +120,21 @@ export default {
           console.log('🔍 Checking stored token:', localStorage.getItem('token'));
           this.$router.push('/dashboard');
         } else {
+          console.log('❌ Login failed - No token in response');
           this.errorMessage = response.data.message || 'Login failed';
         }
       } catch (error) {
+        console.log('💥 Login error details:', error);
+        console.log('💥 Error message:', error.message);
+        console.log('💥 Error response:', error.response);
+        console.log('💥 Error status:', error.response?.status);
+        console.log('💥 Error data:', error.response?.data);
+        
         this.errorMessage = 'Login failed. Please try again.';
         console.error('Login error:', error);
       } finally {
         this.loading = false;
+        console.log('🏁 Login process completed');
       }
     }
   }
