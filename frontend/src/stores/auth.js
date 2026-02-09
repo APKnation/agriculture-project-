@@ -44,9 +44,16 @@ export const useAuthStore = defineStore('auth', {
         if (error.code === 'ECONNABORTED') {
           errorMessage = 'Connection timeout. Please check your internet connection and try again.'
         } else if (error.code === 'ERR_NETWORK') {
-          errorMessage = 'Network error. Backend server may be down. Please try again later.'
+          errorMessage = 'Network error. Backend server may be unreachable or down. Please try again later.'
         } else if (error.response) {
-          errorMessage = error.response.data?.error || error.response.data?.message || 'Invalid credentials'
+            // Check for specific status codes
+            if (error.response.status === 400) {
+                errorMessage = error.response.data?.error || 'Bad Request. Please check your input or contact support.'
+            } else if (error.response.status === 500) {
+                errorMessage = 'Server error. Please try again later.'
+            } else {
+                errorMessage = error.response.data?.error || error.response.data?.message || 'Invalid credentials'
+            }
         } else if (error.request) {
           errorMessage = 'No response from server. Please check your connection.'
         }

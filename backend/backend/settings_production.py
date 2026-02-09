@@ -181,6 +181,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",      # Local dev server
     "https://*.onrender.com",     # Allow all Render domains
     "https://*.netlify.app",      # Allow all Netlify domains
+    "https://agriculture-project-9-nvhd.onrender.com", # Explicitly allow the public URL
 ]
 
 # Additional CSRF settings for SPA
