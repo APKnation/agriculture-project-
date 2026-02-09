@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    
+    <div class="test">
+        <h3>1. Test Backend Health</h3>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>2. Test CORS Preflight</h3>
+        <button onclick="testCORS()">Test CORS Preflight</button>
+        <div id="cors-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>3. Test Login API</h3>
+        <button onclick="testLogin()">Test Login API</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>4. Test with Axios</h3>
+        <button onclick="testAxios()">Test with Axios</button>
+        <div id="axios-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://agriculture-project-9-nvhd.onrender.com';
+        
+        async function testHealth() {
+            const result = document.getElementById('health-result');
+            try {
+                const response = await fetch(`${API_BASE}/health/`);
+                const data = await response.json();
+                result.innerHTML = `<div class="success">✅ Health: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Health Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testCORS() {
+            const result = document.getElementById('cors-result');
+            try {
+                const response = await fetch(`${API_BASE}/api/login/`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': 'https://kilimo.netlify.app',
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+                const headers = [...response.headers.entries()];
+                result.innerHTML = `<div class="success">✅ CORS Preflight: ${response.status}<br>Headers: ${JSON.stringify(headers, null, 2)}</div>`;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ CORS Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testLogin() {
+            const result = document.getElementById('login-result');
+            try {
+                const response = await fetch(`${API_BASE}/api/login/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': 'https://kilimo.netlify.app'
+                    },
+                    body: JSON.stringify({
+                        username: 'apk',
+                        password: 'password123'
+                    })
+                });
+                const data = await response.json();
+                result.innerHTML = `<div class="success">✅ Login: ${response.status}<br>Data: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Login Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testAxios() {
+            const result = document.getElementById('axios-result');
+            try {
+                // Simulate axios-like request
+                const response = await fetch(`${API_BASE}/api/login/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': 'https://kilimo.netlify.app'
+                    },
+                    body: JSON.stringify({
+                        username: 'apk',
+                        password: 'password123'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                result.innerHTML = `<div class="success">✅ Axios-like: ${response.status}<br>Data: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Axios-like Error: ${error.message}</div>`;
+            }
+        }
+        
+        // Auto-run health test on load
+        window.onload = function() {
+            testHealth();
+        };
+    </script>
+</body>
+</html>
