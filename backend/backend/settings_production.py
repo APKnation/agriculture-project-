@@ -48,10 +48,12 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    # CORS middleware MUST be first to handle preflight requests
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -127,22 +129,49 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'market.User'
 
 # CORS settings for production
+# CORS Configuration - CRITICAL for Netlify
 frontend_url = os.environ.get('FRONTEND_URL', 'https://kilimo.netlify.app')
-netlify_url = 'https://kilimo.netlify.app'  # Your specific Netlify domain
+netlify_url = 'https://kilimo.netlify.app'
 
+# Explicit CORS settings
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
     netlify_url,
-    "http://localhost:4173",      # Local preview server
-    "http://localhost:5173",      # Local dev server
-    "http://127.0.0.1:4173",      # Local preview server (IP)
-    "http://127.0.0.1:5173",      # Local dev server (IP)
-    "https://*.onrender.com",     # Allow all Render domains
-    "https://*.netlify.app",      # Allow all Netlify domains
+    "http://localhost:4173",
+    "http://localhost:5173", 
+    "http://127.0.0.1:4173",
+    "http://127.0.0.1:5173",
+    "https://*.onrender.com",
+    "https://*.netlify.app"
 ]
 
-# Allow all origins for development (can be restricted later)
-CORS_ALLOW_ALL_ORIGINS = True  # Temporary fix for testing
+# Allow all origins temporarily for testing
+CORS_ALLOW_ALL_ORIGINS = True
+
+# Allow credentials for cross-origin requests
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS headers configuration
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # CSRF settings for production - CRITICAL FIX
 CSRF_TRUSTED_ORIGINS = [
