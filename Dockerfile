@@ -35,9 +35,9 @@ RUN mkdir -p /app/media/profile_images /app/media/crop_images
 # Expose port
 EXPOSE $PORT
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:$PORT/api/ || exit 1
+# Health check (using Django endpoint)
+HEALTHCHECK --interval=60s --timeout=30s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:$PORT/health/ || exit 1
 
 # Run the startup script
 CMD ["/start.sh"]
