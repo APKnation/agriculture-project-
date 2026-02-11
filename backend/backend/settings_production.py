@@ -25,8 +25,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get
 ALLOWED_HOSTS += [
     'localhost', 
     '127.0.0.1', 
-    'agriculture-backend.onrender.com', 
-    'agriculture-project-9-nvhd.onrender.com'
+    'agriculture-project-apk.onrender.com',
+    'kilimo.netlify.app'
 ]
 
 # Application definition
