@@ -1,11 +1,13 @@
 [build]
   base = "frontend"
-  command = "npm install && npm run build"
+  command = "npm run build:netlify"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20.19.0"
   NPM_VERSION = "10"
+  NPM_CONFIG_LOGLEVEL = "verbose"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 [[redirects]]
   from = "/*"
