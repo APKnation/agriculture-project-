@@ -143,19 +143,12 @@ netlify_url = 'https://kilimo.netlify.app'
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
     netlify_url,
-    "https://agriculture-project-apk.onrender.com",
-    "http://localhost:4173",
-    "http://localhost:5173", 
-    "http://127.0.0.1:4173",
-    "http://127.0.0.1:5173",
-    "https://*.onrender.com",
-    "https://*.netlify.app"
+    "http://localhost:4173",      # Local preview server
+    "http://localhost:5173",      # Local dev server
+    "https://agriculture-project-apk.onrender.com",     # Allow all Render domains
+    "https://kilimo.netlify.app",      # Allow all Netlify domains
 ]
 
-# Remove this line for security
-# CORS_ALLOW_ALL_ORIGINS = True  # ❌ Comment out or remove
-
-# Allow credentials for cross-origin requests
 CORS_ALLOW_CREDENTIALS = True
 
 # CORS headers configuration
@@ -186,11 +179,9 @@ CSRF_TRUSTED_ORIGINS = [
     netlify_url,
     "http://localhost:4173",      # Local preview server
     "http://localhost:5173",      # Local dev server
-    "https://*.onrender.com",     # Allow all Render domains
-    "https://*.netlify.app",      # Allow all Netlify domains
-    "https://agriculture-project-9-nvhd.onrender.com", # Explicitly allow the public URL
+    "https://agriculture-project-apk.onrender.com",     # Allow all Render domains
+    "https://kilimo.netlify.app",      # Allow all Netlify domains
 ]
-
 # Additional CSRF settings for SPA
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True

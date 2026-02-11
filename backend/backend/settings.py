@@ -11,14 +11,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wti+r!1gzb30d!d()5$+s5y)%*k8*pb0*o7mpgw+445th25mb^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
 
 ALLOWED_HOSTS = [
     "agriculture-project-apk.onrender.com",
-    "kilimo.netlify.app",
-    "localhost",
-    "127.0.0.1"
+    ".onrender.com",
+    ".netlify.app",
 ]
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -139,13 +140,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# Cache Configuration (local Redis)
+# Simple cache for Render (no Redis)
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-        "TIMEOUT": 300,
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
 
@@ -155,5 +153,8 @@ SESSION_CACHE_ALIAS = 'default'
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 600
 CACHE_MIDDLEWARE_KEY_PREFIX = 'agri_market_pages'
-CORS_ALLOW_ALL_ORIGINS = True
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
