@@ -2,29 +2,146 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom component styles */
+/* Modern component styles */
 @layer components {
+  /* Enhanced Button Styles */
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 px-6 rounded-xl shadow-medium hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-500 focus:ring-offset-2 backdrop-blur-sm;
   }
   
   .btn-secondary {
-    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
+    @apply bg-gradient-to-r from-modern-slate-500 to-modern-slate-600 hover:from-modern-slate-600 hover:to-modern-slate-700 text-white font-semibold py-3 px-6 rounded-xl shadow-medium hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2 backdrop-blur-sm;
   }
   
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 px-6 rounded-xl shadow-glow hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-accent-500 focus:ring-offset-2 backdrop-blur-sm;
+  }
+  
+  .btn-outline {
+    @apply bg-white/80 backdrop-blur-md border-2 border-modern-slate-200 hover:border-modern-slate-300 text-modern-slate-700 hover:text-modern-slate-900 font-semibold py-3 px-6 rounded-xl shadow-card hover:shadow-medium transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2;
+  }
+  
+  /* Enhanced Input Styles */
   .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+    @apply w-full px-4 py-3 bg-white/70 backdrop-blur-md border border-modern-slate-200 hover:border-modern-slate-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all duration-300 shadow-card;
   }
   
+  .input-field:focus {
+    @apply shadow-glow;
+  }
+  
+  /* Enhanced Card Styles */
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
+    @apply bg-white/80 backdrop-blur-xl rounded-2xl shadow-large border border-modern-slate-100/50 overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:scale-102;
+  }
+  
+  .card:hover {
+    @apply shadow-glow;
   }
   
   .card-header {
-    @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+    @apply px-8 py-6 border-b border-modern-slate-100/50 bg-gradient-to-r from-modern-slate-50 to-white;
   }
   
   .card-body {
-    @apply px-6 py-4;
+    @apply px-8 py-6;
+  }
+  
+  /* Modern Glass Effect */
+  .glass {
+    @apply bg-white/20 backdrop-blur-xl border border-white/20 rounded-2xl;
+  }
+  
+  .glass-dark {
+    @apply bg-modern-slate-900/20 backdrop-blur-xl border border-modern-slate-700/30 rounded-2xl;
+  }
+  
+  /* Gradient Backgrounds */
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-primary-400 via-primary-500 to-accent-600;
+  }
+  
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-br from-modern-slate-100 via-modern-slate-50 to-white;
+  }
+  
+  .bg-gradient-accent {
+    @apply bg-gradient-to-br from-accent-400 via-accent-500 to-modern-purple-600;
+  }
+  
+  /* Modern Text Styles */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Loading States */
+  .loading-skeleton {
+    @apply bg-gradient-to-r from-modern-slate-200 via-modern-slate-100 to-modern-slate-200 bg-cover rounded-xl animate-pulse;
+  }
+  
+  /* Navigation Styles */
+  .nav-link {
+    @apply text-modern-slate-600 hover:text-primary-600 px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-primary-50;
+  }
+  
+  .nav-link-active {
+    @apply text-primary-600 bg-primary-50;
+  }
+  
+  /* Status Indicators */
+  .status-online {
+    @apply bg-modern-emerald-500 text-white px-3 py-1 rounded-full text-xs font-semibold animate-pulse;
+  }
+  
+  .status-offline {
+    @apply bg-modern-slate-400 text-white px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  
+  /* Modern Scrollbar */
+  .scrollbar-modern {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.modern.slate.300') theme('colors.modern.slate.100');
+  }
+  
+  .scrollbar-modern::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-modern::-webkit-scrollbar-track {
+    background: theme('colors.modern.slate.100');
+    border-radius: 3px;
+  }
+  
+  .scrollbar-modern::-webkit-scrollbar-thumb {
+    background: theme('colors.modern.slate.300');
+    border-radius: 3px;
+  }
+  
+  .scrollbar-modern::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.modern.slate.400');
+  }
+}
+
+/* Base layer enhancements */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-gradient-secondary text-modern-slate-900;
+  }
+  
+  /* Modern focus styles */
+  *:focus {
+    @apply outline-none;
+  }
+  
+  *:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2;
   }
 }
