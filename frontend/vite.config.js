@@ -38,19 +38,6 @@ export default defineConfig({
       }
     }
   },
-  css: {
-    postcss: {
-      plugins: [
-        require('tailwindcss'),
-        require('autoprefixer')
-      ]
-    }
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src')
-    }
-  },
   define: {
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_DEVTOOLS__: false,
@@ -58,9 +45,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['vue', 'vue-router', 'axios', 'pinia']
-  },
-  // Ensure proper module resolution
-  esbuild: {
-    target: 'es2015'
   }
 })
