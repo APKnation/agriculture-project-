@@ -48,7 +48,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         <!-- Crop Management Card -->
-        <div class="card group hover:shadow-glow transform transition-all duration-500 animate-slide-up" style="animation-delay: 1s;">
+        <div class="card group hover:shadow-xl transform transition-all duration-500 animate-slide-up" style="animation-delay: 1s;">
           <div class="p-8">
             <div class="flex items-center mb-6">
               <div class="w-16 h-16 bg-gradient-to-br from-modern-emerald-400 to-modern-emerald-600 rounded-2xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">

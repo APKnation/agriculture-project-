@@ -6,37 +6,37 @@
 @layer components {
   /* Enhanced Button Styles */
   .btn-primary {
-    @apply bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 px-6 rounded-xl shadow-medium hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-500 focus:ring-offset-2 backdrop-blur-sm;
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-500 focus:ring-offset-2;
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-r from-modern-slate-500 to-modern-slate-600 hover:from-modern-slate-600 hover:to-modern-slate-700 text-white font-semibold py-3 px-6 rounded-xl shadow-medium hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2 backdrop-blur-sm;
+    @apply bg-gradient-to-r from-modern-slate-500 to-modern-slate-600 hover:from-modern-slate-600 hover:to-modern-slate-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2;
   }
   
   .btn-accent {
-    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 px-6 rounded-xl shadow-glow hover:shadow-large transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-accent-500 focus:ring-offset-2 backdrop-blur-sm;
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-accent-500 focus:ring-offset-2;
   }
   
   .btn-outline {
-    @apply bg-white/80 backdrop-blur-md border-2 border-modern-slate-200 hover:border-modern-slate-300 text-modern-slate-700 hover:text-modern-slate-900 font-semibold py-3 px-6 rounded-xl shadow-card hover:shadow-medium transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2;
+    @apply bg-white/80 backdrop-blur-md border-2 border-modern-slate-200 hover:border-modern-slate-300 text-modern-slate-700 hover:text-modern-slate-900 font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-modern-slate-500 focus:ring-offset-2;
   }
   
   /* Enhanced Input Styles */
   .input-field {
-    @apply w-full px-4 py-3 bg-white/70 backdrop-blur-md border border-modern-slate-200 hover:border-modern-slate-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all duration-300 shadow-card;
+    @apply w-full px-4 py-3 bg-white/70 backdrop-blur-md border border-modern-slate-200 hover:border-modern-slate-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-primary-500 focus:border-primary-500 focus:bg-white transition-all duration-300 shadow-md;
   }
   
   .input-field:focus {
-    @apply shadow-glow;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
   
   /* Enhanced Card Styles */
   .card {
-    @apply bg-white/80 backdrop-blur-xl rounded-2xl shadow-large border border-modern-slate-100/50 overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:scale-102;
+    @apply bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-modern-slate-100/50 overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:scale-105;
   }
   
   .card:hover {
-    @apply shadow-glow;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
   
   .card-header {
@@ -104,7 +104,7 @@
   /* Modern Scrollbar */
   .scrollbar-modern {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.modern.slate.300') theme('colors.modern.slate.100');
+    scrollbar-color: rgb(203 213 225) rgb(241 245 244);
   }
   
   .scrollbar-modern::-webkit-scrollbar {
@@ -112,17 +112,17 @@
   }
   
   .scrollbar-modern::-webkit-scrollbar-track {
-    background: theme('colors.modern.slate.100');
+    background: rgb(241 245 244);
     border-radius: 3px;
   }
   
   .scrollbar-modern::-webkit-scrollbar-thumb {
-    background: theme('colors.modern.slate.300');
+    background: rgb(203 213 225);
     border-radius: 3px;
   }
   
   .scrollbar-modern::-webkit-scrollbar-thumb:hover {
-    background: theme('colors.modern.slate.400');
+    background: rgb(148 163 184);
   }
 }
 
