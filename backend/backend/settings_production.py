@@ -143,6 +143,7 @@ netlify_url = 'https://kilimo.netlify.app'
 CORS_ALLOWED_ORIGINS = [
     frontend_url,
     netlify_url,
+    "https://agriculture-project-apk.onrender.com",
     "http://localhost:4173",
     "http://localhost:5173", 
     "http://127.0.0.1:4173",
@@ -151,8 +152,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://*.netlify.app"
 ]
 
-# Allow all origins temporarily for testing
-CORS_ALLOW_ALL_ORIGINS = True
+# Remove this line for security
+# CORS_ALLOW_ALL_ORIGINS = True  # ❌ Comment out or remove
 
 # Allow credentials for cross-origin requests
 CORS_ALLOW_CREDENTIALS = True

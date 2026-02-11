@@ -13,7 +13,12 @@ SECRET_KEY = 'django-insecure-wti+r!1gzb30d!d()5$+s5y)%*k8*pb0*o7mpgw+445th25mb^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "agriculture-project-apk.onrender.com",
+    "kilimo.netlify.app",
+    "localhost",
+    "127.0.0.1"
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -150,3 +155,5 @@ SESSION_CACHE_ALIAS = 'default'
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 600
 CACHE_MIDDLEWARE_KEY_PREFIX = 'agri_market_pages'
+CORS_ALLOW_ALL_ORIGINS = True
+

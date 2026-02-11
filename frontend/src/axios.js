@@ -5,7 +5,7 @@ import router from './router'
 const isDevelopment = import.meta.env.DEV
 const baseURL = isDevelopment 
   ? 'http://localhost:8000/api/'
-  : 'https://agriculture-project-9-nvhd.onrender.com/api/'
+  : 'https://agriculture-project-apk.onrender.com/api/'
 
 const apiClient = axios.create({
   baseURL: baseURL,
@@ -39,7 +39,7 @@ apiClient.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh')
       if (refreshToken) {
         try {
-          const response = await axios.post('https://agriculture-project-9-nvhd.onrender.com/api/token/refresh/', { refresh: refreshToken })
+          const response = await axios.post('https://agriculture-project-apk.onrender.com/api/token/refresh/', { refresh: refreshToken })
           const newToken = response.data.access
           localStorage.setItem('token', newToken)
           apiClient.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
