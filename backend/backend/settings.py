@@ -3,14 +3,13 @@ Django settings for backend project.
 """
 
 from pathlib import Path
-from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-wti+r!1gzb30d!d()5$+s5y)%*k8*pb0*o7mpgw+445th25mb^'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 
@@ -18,6 +17,8 @@ ALLOWED_HOSTS = [
     "agriculture-project-apk.onrender.com",
     ".onrender.com",
     ".netlify.app",
+    "localhost",
+    "127.0.0.1"
 ]
 
 
@@ -80,13 +81,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database - Support both development and production
+if os.environ.get('DATABASE_URL'):
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
