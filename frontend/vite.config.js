@@ -17,7 +17,7 @@ export default defineConfig({
     target: 'es2015',
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
-      input: path.resolve(__dirname, 'public/index.html'),
+      input: path.resolve(__dirname, 'index.html'),
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
@@ -29,6 +29,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    open: true,
     proxy: {
       '/api': {
         target: 'http://localhost:8000',

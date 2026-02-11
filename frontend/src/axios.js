@@ -1,9 +1,14 @@
 import axios from 'axios'
 import router from './router'
 
-// Always use the deployed backend URL for development and production
+// Use localhost for development, production URL for production
+const isDevelopment = import.meta.env.DEV
+const baseURL = isDevelopment 
+  ? 'http://localhost:8000/api/'
+  : 'https://agriculture-project-9-nvhd.onrender.com/api/'
+
 const apiClient = axios.create({
-  baseURL: 'https://agriculture-project-9-nvhd.onrender.com/api/',
+  baseURL: baseURL,
   timeout: 60000, // Increased timeout to 60 seconds for Render cold starts
   headers: {
     'Content-Type': 'application/json'
