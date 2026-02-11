@@ -1,166 +1,135 @@
 <template>
-  <div class="register-wrapper">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-lg border-0 overflow-hidden">
-            <div class="card-header text-white text-center p-4 p-md-5" style="background: var(--gradient-primary);">
-              <div class="logo-circle mx-auto mb-3">
-                <span class="logo-text">AM</span>
+  <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center p-4">
+    <div class="relative w-full max-w-2xl">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Join AgriConnect</h1>
+        <p class="text-gray-600">Create your account and start connecting</p>
+      </div>
+
+      <div class="card shadow-xl">
+        <div class="card-body p-8">
+          <div v-if="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-red-800">{{ errorMessage }}</p>
+          </div>
+
+          <div v-if="successMessage" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p class="text-green-800">{{ successMessage }}</p>
+          </div>
+
+          <form @submit.prevent="handleRegister" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Username *</label>
+                <input v-model="formData.username" type="text" required class="input-field" placeholder="Choose a username">
               </div>
-              <h1 class="fw-bold mb-2 display-5">AgroConnect</h1>
-              <p class="subtitle mb-0 lead">Create your account</p>
-            </div>
-            <div class="card-body p-4 p-md-5">
-              <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ errorMessage }}
-                <button type="button" class="btn-close" @click="errorMessage = ''"></button>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                <input v-model="formData.email" type="email" required class="input-field" placeholder="your@email.com">
               </div>
 
-              <form @submit.prevent="handleRegister">
-                <!-- User Information -->
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Full Name</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="fullName" 
-                      type="text" 
-                      class="form-control" 
-                      placeholder="Enter your full name" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                <input v-model="formData.firstName" type="text" required class="input-field" placeholder="John">
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Username</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="username" 
-                      type="text" 
-                      class="form-control" 
-                      placeholder="Choose a username" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                <input v-model="formData.lastName" type="text" required class="input-field" placeholder="Doe">
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Email</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="email" 
-                      type="email" 
-                      class="form-control" 
-                      placeholder="Enter your email" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                <input v-model="formData.password" type="password" required class="input-field" placeholder="Create a strong password">
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Phone Number</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="phoneNumber" 
-                      type="tel" 
-                      class="form-control" 
-                      placeholder="Enter your phone number" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Region</label>
-                  <div class="input-group input-group-lg">
-                    <select 
-                      v-model="region" 
-                      class="form-select" 
-                      required 
-                      :disabled="loading" 
-                    >
-                      <option value="">Select your region</option>
-                      <option value="Iringa">Iringa</option>
-                      <option value="Dar es Salaam">Dar es Salaam</option>
-                      <option value="Mwanza">Mwanza</option>
-                      <option value="Arusha">Arusha</option>
-                      <option value="Dodoma">Dodoma</option>
-                      <option value="Tanga">Tanga</option>
-                      <option value="Mbeya">Mbeya</option>
-                      <option value="Morogoro">Morogoro</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Role Selection -->
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Account Type</label>
-                  <div class="input-group input-group-lg">
-                    <select 
-                      v-model="role" 
-                      class="form-select" 
-                      required 
-                      :disabled="loading" 
-                    >
-                      <option value="">Select account type</option>
-                      <option value="farmer">Farmer</option>
-                      <option value="officer">Agricultural Officer</option>
-                      <option value="admin">Administrator</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Password Fields -->
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Password</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="password" 
-                      type="password" 
-                      class="form-control" 
-                      placeholder="Create a password" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label fw-semibold text-secondary fs-5">Confirm Password</label>
-                  <div class="input-group input-group-lg">
-                    <input 
-                      v-model="confirmPassword" 
-                      type="password" 
-                      class="form-control" 
-                      placeholder="Confirm your password" 
-                      required 
-                      :disabled="loading" 
-                    />
-                  </div>
-                </div>
-
-                <div class="d-grid gap-3 mt-4">
-                  <button 
-                    type="submit" 
-                    class="btn btn-lg fw-semibold shadow" 
-                    style="background: var(--gradient-primary); border: none; color: white;" 
-                    :disabled="loading" 
-                  >
-                    <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
-                    <span v-else>Create Account</span>
-                  </button>
-                </div>
-              </form>
-
-              <div class="text-center mt-4 border-top pt-4">
-                <p class="mb-0">Already have an account? <router-link to="/login" class="text-decoration-none">Sign in</router-link></p>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
+                <input v-model="formData.confirmPassword" type="password" required class="input-field" placeholder="Confirm your password">
+                <p v-if="formData.confirmPassword && formData.password !== formData.confirmPassword" class="mt-2 text-sm text-red-600">
+                  Passwords do not match
+                </p>
               </div>
             </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">I am a *</label>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <label class="relative">
+                  <input type="radio" v-model="formData.role" value="farmer" class="peer sr-only" required>
+                  <div class="p-4 border-2 rounded-lg cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:border-gray-300">
+                    <div class="text-center">
+                      <h3 class="font-medium">Farmer</h3>
+                      <p class="text-sm text-gray-500">Grow and sell crops</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative">
+                  <input type="radio" v-model="formData.role" value="officer" class="peer sr-only">
+                  <div class="p-4 border-2 rounded-lg cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:border-gray-300">
+                    <div class="text-center">
+                      <h3 class="font-medium">Market Officer</h3>
+                      <p class="text-sm text-gray-500">Manage markets</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="relative">
+                  <input type="radio" v-model="formData.role" value="admin" class="peer sr-only">
+                  <div class="p-4 border-2 rounded-lg cursor-pointer transition-all peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:border-gray-300">
+                    <div class="text-center">
+                      <h3 class="font-medium">Admin</h3>
+                      <p class="text-sm text-gray-500">System administrator</p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Region</label>
+              <select v-model="formData.region" class="input-field">
+                <option value="">Select your region</option>
+                <option value="iringa">Iringa</option>
+                <option value="dar-es-salaam">Dar es Salaam</option>
+                <option value="arusha">Arusha</option>
+                <option value="mbeya">Mbeya</option>
+                <option value="dodoma">Dodoma</option>
+                <option value="mwanza">Mwanza</option>
+                <option value="tanga">Tanga</option>
+                <option value="morogoro">Morogoro</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="flex items-start">
+                <input type="checkbox" v-model="formData.agreeTerms" class="w-4 h-4 text-primary-600 border-gray-300 rounded mt-1">
+                <span class="ml-2 text-sm text-gray-600">
+                  I agree to the Terms and Conditions and Privacy Policy
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" :disabled="loading || !isFormValid" class="w-full btn-primary">
+              <span v-if="loading" class="flex items-center justify-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Creating Account...
+              </span>
+              <span v-else>Create Account</span>
+            </button>
+          </form>
+
+          <div class="text-center mt-6 border-t pt-6">
+            <p class="text-gray-600">
+              Already have an account? 
+              <router-link to="/login" class="text-primary-600 hover:text-primary-700 font-medium">
+                Sign in
+              </router-link>
+            </p>
           </div>
         </div>
       </div>
@@ -169,124 +138,94 @@
 </template>
 
 <script>
-import axios from '../axios';
-
 export default {
   name: 'Register',
   data() {
     return {
-      fullName: '',
-      username: '',
-      email: '',
-      phoneNumber: '',
-      region: '',
-      role: '',
-      password: '',
-      confirmPassword: '',
       loading: false,
-      errorMessage: ''
-    };
+      errorMessage: '',
+      successMessage: '',
+      formData: {
+        username: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        password: '',
+        confirmPassword: '',
+        role: '',
+        region: '',
+        agreeTerms: false
+      }
+    }
+  },
+  computed: {
+    isFormValid() {
+      return this.formData.username && 
+             this.formData.email && 
+             this.formData.firstName && 
+             this.formData.lastName && 
+             this.formData.password && 
+             this.formData.confirmPassword && 
+             this.formData.password === this.formData.confirmPassword && 
+             this.formData.role && 
+             this.formData.agreeTerms
+    }
   },
   methods: {
     async handleRegister() {
-      // Validation
-      if (!this.fullName || !this.username || !this.email || !this.phoneNumber || !this.region || !this.role) {
-        this.errorMessage = 'Please fill in all required fields';
-        return;
+      if (!this.isFormValid) {
+        this.errorMessage = 'Please fill in all required fields and agree to the terms'
+        return
       }
 
-      if (this.password !== this.confirmPassword) {
-        this.errorMessage = 'Passwords do not match';
-        return;
-      }
-
-      if (this.password.length < 6) {
-        this.errorMessage = 'Password must be at least 6 characters long';
-        return;
-      }
-
-      this.loading = true;
+      this.loading = true
+      this.errorMessage = ''
+      this.successMessage = ''
+      
       try {
-        const response = await axios.post('/auth/register/', {
-          username: this.username,
-          email: this.email,
-          full_name: this.fullName,
-          phone_number: this.phoneNumber,
-          region: this.region,
-          role: this.role,
-          password: this.password
-        });
-
-        if (response.data.token) {
-          console.log('🎉 Registration successful - Token:', response.data.token);
-          console.log('👤 User role:', response.data.role);
+        console.log('📝 Registering new user...')
+        
+        const response = await this.$axios.post('/register/', {
+          username: this.formData.username,
+          email: this.formData.email,
+          first_name: this.formData.firstName,
+          last_name: this.formData.lastName,
+          password: this.formData.password,
+          role: this.formData.role,
+          region: this.formData.region
+        })
+        
+        console.log('📨 Registration Response:', response)
+        
+        if (response.data.id) {
+          this.successMessage = 'Account created successfully! Redirecting to login...'
           
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('role', response.data.role);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          
-          this.$router.push('/dashboard');
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 2000)
         } else {
-          this.errorMessage = response.data.message || 'Registration failed';
+          this.errorMessage = 'Registration failed. Please try again.'
         }
       } catch (error) {
-        this.errorMessage = error.response?.data?.error || 'Registration failed. Please try again.';
-        console.error('Registration error:', error);
+        console.log('💥 Registration error:', error)
+        
+        if (error.response?.data) {
+          const errors = error.response.data
+          if (typeof errors === 'object') {
+            const errorMessages = Object.entries(errors).map(([field, messages]) => {
+              return `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`
+            })
+            this.errorMessage = errorMessages.join('; ')
+          } else {
+            this.errorMessage = errors.detail || errors.error || 'Registration failed'
+          }
+        } else {
+          this.errorMessage = 'Registration failed. Please try again.'
+        }
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     }
   }
-};
+}
 </script>
-
-<style scoped>
-.register-wrapper {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.card {
-  border-radius: 1rem;
-  border: none;
-}
-
-.logo-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.logo-text {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-.form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-
-.btn {
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-</style>

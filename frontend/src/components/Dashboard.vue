@@ -1,339 +1,188 @@
 <template>
-  <div class="dashboard-wrapper">
-    <div class="container-fluid py-4 py-lg-5">
-      <!-- Welcome Header -->
-      <div class="row mb-4 mb-lg-5">
-        <div class="col-12">
-          <div class="welcome-card bg-gradient-primary text-white p-4 p-lg-5 rounded-4 shadow-lg">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-              <div>
-                <h1 class="fw-bold mb-3 display-5">
-                  <i class="bi bi-sun me-2 me-lg-3"></i>
-                  Welcome back, {{ farmerName }}!
-                </h1>
-                <p class="mb-0 opacity-90 lead">
-                  <i class="bi bi-calendar3 me-2"></i>
-                  {{ currentDate }}
-                </p>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center">
+              <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">AC</span>
               </div>
-              <div class="text-end">
-                <div class="badge bg-white text-primary px-4 py-3 fs-5">
-                  <i class="bi bi-clipboard-data me-2"></i>
-                  {{ totalCrops }} Crops Tracked
+              <span class="ml-3 text-xl font-bold text-gray-900">AgriConnect</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <!-- Notifications -->
+            <button class="relative p-2 text-gray-600 hover:text-gray-900">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
+            </button>
+            
+            <!-- User Menu -->
+            <div class="relative">
+              <button @click="showUserMenu = !showUserMenu" class="flex items-center space-x-3 text-sm rounded-lg p-2 hover:bg-gray-100">
+                <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+                  <span class="text-white font-medium">{{ userInitials }}</span>
+                </div>
+                <div class="text-left">
+                  <p class="font-medium text-gray-900">{{ user?.first_name }} {{ user?.last_name }}</p>
+                  <p class="text-xs text-gray-500 capitalize">{{ user?.role }}</p>
+                </div>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              
+              <!-- Dropdown Menu -->
+              <div v-if="showUserMenu" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div class="py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                  <button @click="logout" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </nav>
 
-      <!-- Loading State -->
-      <div v-if="loading" class="text-center py-5">
-        <div class="d-flex flex-column align-items-center">
-          <div class="spinner-border text-success mb-4" style="width: 4rem; height: 4rem;" role="status">
-            <span class="visually-hidden">Loading...</span>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{ user?.first_name }}!</h1>
+        <p class="text-gray-600 mt-2">Here's what's happening with your agricultural activities today.</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-primary-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-gray-900">Total Crops</h3>
+              <p class="text-2xl font-bold text-primary-600">{{ stats.totalCrops }}</p>
+            </div>
           </div>
-          <div class="text-center">
-            <h4 class="text-muted mb-2">Loading Your Dashboard</h4>
-            <p class="text-muted">Fetching your agricultural data...</p>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-green-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-gray-900">Harvested</h3>
+              <p class="text-2xl font-bold text-green-600">{{ stats.harvestedCrops }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-yellow-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-gray-900">Growing</h3>
+              <p class="text-2xl font-bold text-yellow-600">{{ stats.growingCrops }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 bg-purple-100 rounded-lg p-3">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c1.11 0 2.08.402 2.599 1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-gray-900">Market Value</h3>
+              <p class="text-2xl font-bold text-purple-600">${{ stats.marketValue }}</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Main Content -->
-      <div v-else>
-        <!-- Key Metrics -->
-        <div class="row g-4 g-lg-5 mb-4 mb-lg-5">
-          <!-- Total Crops -->
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="metric-card card border-0 shadow-lg h-100">
-              <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <p class="text-muted text-uppercase small fw-semibold mb-3">
-                      <i class="bi bi-tree me-2"></i>My Crops
-                    </p>
-                    <h3 class="fw-bold mb-1">{{ totalCrops }}</h3>
-                    <small class="text-success">
-                      <i class="bi bi-check-circle-fill me-1"></i>Active
-                    </small>
+      <!-- Recent Activity -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent Crops -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="text-lg font-medium text-gray-900">Recent Crops</h2>
+            <router-link to="/crops" class="text-sm text-primary-600 hover:text-primary-700">View all</router-link>
+          </div>
+          <div class="card-body">
+            <div class="space-y-4">
+              <div v-for="crop in recentCrops" :key="crop.id" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
                   </div>
-                  <div class="metric-icon bg-success bg-opacity-10 text-success">
-                    <i class="bi bi-flower1"></i>
+                  <div class="ml-3">
+                    <p class="font-medium text-gray-900">{{ crop.name }}</p>
+                    <p class="text-sm text-gray-500">{{ crop.type }} • {{ crop.status }}</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Unread Notifications -->
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="metric-card card border-0 shadow-sm h-100">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <p class="text-muted text-uppercase small fw-semibold mb-2">
-                      <i class="bi bi-bell me-1"></i>Notifications
-                    </p>
-                    <h3 class="fw-bold mb-1">{{ unreadNotifications }}</h3>
-                    <small :class="unreadNotifications > 0 ? 'text-warning' : 'text-muted'">
-                      <i :class="unreadNotifications > 0 ? 'bi bi-exclamation-circle-fill' : 'bi bi-check-circle'" class="me-1"></i>
-                      {{ unreadNotifications > 0 ? 'Unread' : 'All caught up' }}
-                    </small>
-                  </div>
-                  <div class="metric-icon bg-warning bg-opacity-10 text-warning">
-                    <i class="bi bi-bell-fill"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Price Records -->
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="metric-card card border-0 shadow-sm h-100">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <p class="text-muted text-uppercase small fw-semibold mb-2">
-                      <i class="bi bi-graph-up me-1"></i>Price Records
-                    </p>
-                    <h3 class="fw-bold mb-1">{{ totalPriceRecords }}</h3>
-                    <small class="text-info">
-                      <i class="bi bi-geo-alt-fill me-1"></i>{{ totalRegions }} Regions
-                    </small>
-                  </div>
-                  <div class="metric-icon bg-info bg-opacity-10 text-info">
-                    <i class="bi bi-cash-stack"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Average Market Price -->
-          <div class="col-12 col-md-6 col-xl-3">
-            <div class="metric-card card border-0 shadow-sm h-100">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <p class="text-muted text-uppercase small fw-semibold mb-2">
-                      <i class="bi bi-currency-exchange me-1"></i>Avg Market Price
-                    </p>
-                    <h3 class="fw-bold mb-1">{{ averageMarketPrice }}</h3>
-                    <small class="text-primary">
-                      <i class="bi bi-activity me-1"></i>TZS per kg
-                    </small>
-                  </div>
-                  <div class="metric-icon bg-primary bg-opacity-10 text-primary">
-                    <i class="bi bi-coin"></i>
-                  </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-gray-900">{{ crop.yield_estimate }}kg</p>
+                  <p class="text-xs text-gray-500">{{ formatDate(crop.planting_date) }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="row g-4 mb-4">
-          <!-- My Crops Table -->
-          <div class="col-lg-7">
-            <div class="card border-0 shadow-sm h-100">
-              <div class="card-header bg-white border-bottom py-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 fw-bold">
-                    <i class="bi bi-list-check text-success me-2"></i>
-                    My Crops
-                  </h5>
-                  <router-link to="/crops" class="btn btn-sm btn-outline-success">
-                    <i class="bi bi-plus-circle me-1"></i>Add Crop
-                  </router-link>
-                </div>
-              </div>
-              <div class="card-body p-0">
-                <!-- Empty State -->
-                <div v-if="crops.length === 0" class="text-center py-5">
-                  <i class="bi bi-inbox display-4 text-muted mb-3"></i>
-                  <h5 class="text-muted">No Crops Yet</h5>
-                  <p class="text-muted">Add your first crop to get started</p>
-                  <router-link to="/crops" class="btn btn-success">
-                    <i class="bi bi-plus-circle me-2"></i>Add Your First Crop
-                  </router-link>
-                </div>
-
-                <!-- Crops List -->
-                <div v-else class="table-responsive">
-                  <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                      <tr>
-                        <th class="px-4 py-3">Crop Name</th>
-                        <th class="px-4 py-3">Category</th>
-                        <th class="px-4 py-3">Season</th>
-                        <th class="px-4 py-3 text-end">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="crop in crops" :key="crop.id">
-                        <td class="px-4 py-3">
-                          <div class="d-flex align-items-center">
-                            <div class="crop-badge me-3">
-                              <i class="bi bi-flower2"></i>
-                            </div>
-                            <span class="fw-semibold">{{ crop.name }}</span>
-                          </div>
-                        </td>
-                        <td class="px-4 py-3">
-                          <span class="badge bg-success-subtle text-success">
-                            {{ crop.category || 'General' }}
-                          </span>
-                        </td>
-                        <td class="px-4 py-3">
-                          <span class="text-muted">{{ crop.season || 'All Year' }}</span>
-                        </td>
-                        <td class="px-4 py-3 text-end">
-                          <button class="btn btn-sm btn-outline-primary" @click="viewCropPrices(crop.id)">
-                            <i class="bi bi-graph-up me-1"></i>View Prices
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="text-lg font-medium text-gray-900">Quick Actions</h2>
           </div>
-
-          <!-- Recent Notifications -->
-          <div class="col-lg-5">
-            <div class="card border-0 shadow-sm h-100">
-              <div class="card-header bg-white border-bottom py-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0 fw-bold">
-                    <i class="bi bi-bell text-warning me-2"></i>
-                    Recent Notifications
-                  </h5>
-                  <router-link to="/notifications" class="btn btn-sm btn-outline-warning">
-                    View All
-                  </router-link>
-                </div>
-              </div>
-              <div class="card-body p-0">
-                <!-- Empty State -->
-                <div v-if="notifications.length === 0" class="text-center py-5">
-                  <i class="bi bi-bell-slash display-4 text-muted mb-3"></i>
-                  <h6 class="text-muted">No Notifications</h6>
-                  <p class="text-muted small">You're all caught up!</p>
-                </div>
-
-                <!-- Notifications List -->
-                <div v-else class="notification-list">
-                  <div 
-                    v-for="notification in recentNotifications" 
-                    :key="notification.id"
-                    class="notification-item p-3 border-bottom"
-                    :class="{ 'unread': !notification.read }"
-                  >
-                    <div class="d-flex">
-                      <div class="notification-icon me-3">
-                        <i class="bi bi-info-circle-fill"></i>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h6 class="mb-1 fw-semibold">{{ notification.crop?.name || 'System Notification' }}</h6>
-                        <p class="mb-1 small">{{ notification.message }}</p>
-                        <small class="text-muted">
-                          <i class="bi bi-clock me-1"></i>
-                          {{ formatTimeAgo(notification.created_at) }}
-                        </small>
-                      </div>
-                      <div v-if="!notification.read" class="ms-2">
-                        <span class="badge bg-primary rounded-circle" style="width: 8px; height: 8px;"></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions & Regional Insights -->
-        <div class="row g-4">
-          <!-- Quick Actions -->
-          <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-              <div class="card-header bg-white border-bottom py-3">
-                <h5 class="mb-0 fw-bold">
-                  <i class="bi bi-lightning-charge text-primary me-2"></i>
-                  Quick Actions
-                </h5>
-              </div>
-              <div class="card-body">
-                <div class="d-grid gap-2">
-                  <router-link to="/price-comparison" class="btn btn-outline-primary text-start">
-                    <i class="bi bi-graph-up-arrow me-2"></i>
-                    Compare Regional Prices
-                  </router-link>
-                  <router-link to="/notifications" class="btn btn-outline-warning text-start">
-                    <i class="bi bi-bell me-2"></i>
-                    View Selling Alerts
-                  </router-link>
-                  <router-link to="/crops" class="btn btn-outline-success text-start">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    Add New Crop
-                  </router-link>
-                  <button class="btn btn-outline-info text-start" @click="refreshDashboard">
-                    <i class="bi bi-arrow-clockwise me-2"></i>
-                    Refresh Data
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Regions by Price -->
-          <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
-              <div class="card-header bg-white border-bottom py-3">
-                <h5 class="mb-0 fw-bold">
-                  <i class="bi bi-bar-chart text-info me-2"></i>
-                  Top Regions by Average Price
-                </h5>
-              </div>
-              <div class="card-body">
-                <!-- Empty State -->
-                <div v-if="topRegions.length === 0" class="text-center py-4">
-                  <i class="bi bi-map display-4 text-muted mb-3"></i>
-                  <p class="text-muted">No regional data available yet</p>
-                </div>
-
-                <!-- Regions List -->
-                <div v-else>
-                  <div 
-                    v-for="(region, index) in topRegions" 
-                    :key="index"
-                    class="region-item d-flex justify-content-between align-items-center mb-3 p-3 rounded"
-                  >
-                    <div class="d-flex align-items-center">
-                      <div class="region-rank me-3">
-                        {{ index + 1 }}
-                      </div>
-                      <div>
-                        <h6 class="mb-0 fw-semibold">
-                          <i class="bi bi-geo-alt-fill text-danger me-2"></i>
-                          {{ region.region }}
-                        </h6>
-                        <small class="text-muted">{{ region.count }} price records</small>
-                      </div>
-                    </div>
-                    <div class="text-end">
-                      <div class="fw-bold text-success fs-5">
-                        TZS {{ formatPrice(region.avg_price) }}
-                      </div>
-                      <small class="text-muted">avg price</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="card-body">
+            <div class="grid grid-cols-2 gap-4">
+              <button class="p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">
+                <svg class="w-8 h-8 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-900">Add Crop</p>
+              </button>
+              
+              <button class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                <svg class="w-8 h-8 text-green-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-900">View Market</p>
+              </button>
+              
+              <button class="p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+                <svg class="w-8 h-8 text-yellow-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-900">Weather</p>
+              </button>
+              
+              <button class="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                <svg class="w-8 h-8 text-purple-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <p class="text-sm font-medium text-gray-900">Reports</p>
+              </button>
             </div>
           </div>
         </div>
@@ -343,364 +192,61 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: 'Dashboard',
   data() {
     return {
-      loading: true,
-      farmerName: 'Farmer',
-      crops: [],
-      notifications: [],
-      priceRecords: [],
-      topRegions: [],
-      
-      // Metrics
-      totalCrops: 0,
-      unreadNotifications: 0,
-      totalPriceRecords: 0,
-      totalRegions: 0,
-      averageMarketPrice: 'TZS 0'
-    };
+      showUserMenu: false,
+      user: null,
+      stats: {
+        totalCrops: 0,
+        harvestedCrops: 0,
+        growingCrops: 0,
+        marketValue: 0
+      },
+      recentCrops: []
+    }
   },
   computed: {
-    currentDate() {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date().toLocaleDateString('en-US', options);
-    },
-    recentNotifications() {
-      return this.notifications.slice(0, 5);
+    userInitials() {
+      if (this.user) {
+        return `${this.user.first_name?.[0]}${this.user.last_name?.[0]}`.toUpperCase()
+      }
+      return 'U'
     }
-  },
-  async mounted() {
-    await this.loadDashboardData();
   },
   methods: {
-    async loadDashboardData() {
-      this.loading = true;
+    async fetchDashboardData() {
       try {
-        // Fetch all data in parallel
-        const [cropsRes, notificationsRes, priceRecordsRes] = await Promise.all([
-          axios.get('/crops/'),
-          axios.get('/notifications/'),
-          axios.get('/price-records/')
-        ]);
+        // Fetch user data
+        const userResponse = await this.$axios.get('/user/')
+        this.user = userResponse.data
 
-        // Store data
-        this.crops = Array.isArray(cropsRes.data) ? cropsRes.data : [];
-        this.notifications = Array.isArray(notificationsRes.data) ? notificationsRes.data : [];
-        this.priceRecords = Array.isArray(priceRecordsRes.data) ? priceRecordsRes.data : [];
-
-        console.log('📊 Dashboard data loaded:');
-        console.log('Crops:', this.crops.length);
-        console.log('Notifications:', this.notifications.length);
-        console.log('Price Records:', this.priceRecords.length);
-
-        // Calculate metrics
-        this.calculateMetrics();
+        // Fetch crops data
+        const cropsResponse = await this.$axios.get('/crops/')
+        const crops = cropsResponse.data
         
+        this.stats.totalCrops = crops.length
+        this.stats.harvestedCrops = crops.filter(c => c.status === 'harvested').length
+        this.stats.growingCrops = crops.filter(c => c.status === 'growing').length
+        this.stats.marketValue = crops.reduce((sum, crop) => sum + (crop.yield_estimate || 0), 0)
+        
+        this.recentCrops = crops.slice(0, 5)
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
-        console.error('Error details:', error.response?.data || error.message);
-        
-        // Don't automatically redirect to login on data loading errors
-        // Only redirect on authentication errors (401)
-        if (error.response?.status === 401) {
-          console.log('🔐 Authentication error - redirecting to login');
-          this.$router.push('/login');
-        } else {
-          console.log('📊 Data loading error - showing error message');
-          this.errorMessage = 'Failed to load dashboard data. Please try refreshing the page.';
-        }
-      } finally {
-        this.loading = false;
+        console.error('Error fetching dashboard data:', error)
       }
     },
-    
-    calculateMetrics() {
-      // Total crops
-      this.totalCrops = this.crops.length;
-      
-      // Unread notifications
-      this.unreadNotifications = this.notifications.filter(n => !n.read).length;
-      
-      // Total price records
-      this.totalPriceRecords = this.priceRecords.length;
-      
-      // Unique regions
-      const regions = new Set(this.priceRecords.map(p => p.region));
-      this.totalRegions = regions.size;
-      
-      // Average market price
-      if (this.priceRecords.length > 0) {
-        const total = this.priceRecords.reduce((sum, record) => sum + parseFloat(record.price), 0);
-        const avg = total / this.priceRecords.length;
-        this.averageMarketPrice = `TZS ${this.formatPrice(avg.toFixed(2))}`;
-      }
-      
-      // Top regions by average price
-      this.calculateTopRegions();
+    formatDate(dateString) {
+      if (!dateString) return 'N/A'
+      return new Date(dateString).toLocaleDateString()
     },
-    
-    calculateTopRegions() {
-      const regionMap = {};
-      
-      this.priceRecords.forEach(record => {
-        if (!regionMap[record.region]) {
-          regionMap[record.region] = {
-            region: record.region,
-            total: 0,
-            count: 0
-          };
-        }
-        regionMap[record.region].total += parseFloat(record.price);
-        regionMap[record.region].count += 1;
-      });
-      
-      this.topRegions = Object.values(regionMap)
-        .map(r => ({
-          region: r.region,
-          avg_price: r.total / r.count,
-          count: r.count
-        }))
-        .sort((a, b) => b.avg_price - a.avg_price)
-        .slice(0, 5);
-    },
-    
-    formatPrice(price) {
-      return new Intl.NumberFormat('en-TZ').format(price);
-    },
-    
-    formatTimeAgo(dateString) {
-      const date = new Date(dateString);
-      const now = new Date();
-      const seconds = Math.floor((now - date) / 1000);
-      
-      if (seconds < 60) return 'Just now';
-      if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-      if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-      if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
-      
-      return date.toLocaleDateString();
-    },
-    
-    viewCropPrices(cropId) {
-      this.$router.push(`/price-comparison?crop=${cropId}`);
-    },
-    
-    async refreshDashboard() {
-      await this.loadDashboardData();
+    logout() {
+      localStorage.clear()
+      this.$router.push('/login')
     }
+  },
+  mounted() {
+    this.fetchDashboardData()
   }
-};
+}
 </script>
-
-<style scoped>
-.dashboard-wrapper {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-.welcome-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  animation: fadeIn 0.5s ease-out;
-}
-
-.metric-card {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-}
-
-.metric-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-}
-
-.metric-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-}
-
-.crop-badge {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
-
-.notification-item {
-  transition: all 0.2s ease;
-}
-
-.notification-item:hover {
-  background-color: rgba(102, 126, 234, 0.05);
-}
-
-.notification-item.unread {
-  background-color: rgba(13, 110, 253, 0.05);
-  border-left: 3px solid #0d6efd;
-}
-
-.notification-icon {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-<style scoped>
-.dashboard-wrapper {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  min-height: 100vh;
-}
-
-.welcome-card {
-  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-  border: none;
-  box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3);
-}
-
-.metric-card {
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-}
-
-.metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  border-color: #dee2e6;
-}
-
-.metric-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-}
-
-.region-item {
-  background: rgba(13, 110, 253, 0.03);
-  border: 1px solid rgba(13, 110, 253, 0.1);
-  transition: all 0.3s ease;
-  border-radius: 0.75rem;
-}
-
-.region-item:hover {
-  background: rgba(13, 110, 253, 0.08);
-  transform: translateX(5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.region-rank {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.card {
-  border-radius: 1rem;
-  animation: fadeIn 0.5s ease-out;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.btn {
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Mobile Responsive Enhancements */
-@media (max-width: 768px) {
-  .dashboard-wrapper {
-    padding: 1rem 0;
-  }
-  
-  .welcome-card {
-    padding: 2rem 1.5rem !important;
-  }
-  
-  .metric-card .card-body {
-    padding: 1.5rem !important;
-  }
-  
-  .metric-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.25rem;
-  }
-  
-  .region-rank {
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .welcome-card {
-    padding: 1.5rem 1rem !important;
-  }
-  
-  .metric-card .card-body {
-    padding: 1rem !important;
-  }
-  
-  .metric-icon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.125rem;
-  }
-  
-  .region-rank {
-    width: 30px;
-    height: 30px;
-    font-size: 0.875rem;
-  }
-}
-</style>

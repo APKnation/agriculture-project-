@@ -261,7 +261,21 @@ export default {
   mounted() {
     // Check if user is already logged in
     const token = localStorage.getItem('token')
-    if (token) {
+    const user = localStorage.getItem('user')
+    
+    // In development, verify backend is available
+    if (import.meta.env.DEV && token && user) {
+      // Check if backend is running before auto-login
+      this.$axios.get('/health/').then(() => {
+        // Backend is running, proceed with auto-login
+        this.$router.push('/dashboard')
+      }).catch(() => {
+        // Backend not running, clear cache and show login
+        console.log('🚫 Backend not available, clearing cache')
+        localStorage.clear()
+      })
+    } else if (token && user) {
+      // Production or backend assumed available
       this.$router.push('/dashboard')
     }
     
