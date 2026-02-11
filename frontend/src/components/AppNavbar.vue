@@ -23,6 +23,9 @@
           <router-link to="/marketplace" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
             Marketplace
           </router-link>
+          <router-link to="/price-trends" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            Price Trends
+          </router-link>
           <router-link to="/weather" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
             Weather
           </router-link>
@@ -95,6 +98,9 @@
         </router-link>
         <router-link to="/marketplace" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors">
           Marketplace
+        </router-link>
+        <router-link to="/price-trends" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors">
+          Price Trends
         </router-link>
         <router-link to="/weather" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors">
           Weather

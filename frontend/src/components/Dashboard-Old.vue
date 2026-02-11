@@ -1,7 +1,55 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Navigation Header -->
-    <AppNavbar />
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 flex items-center">
+              <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">AC</span>
+              </div>
+              <span class="ml-3 text-xl font-bold text-gray-900">AgriConnect</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <!-- Notifications -->
+            <button class="relative p-2 text-gray-600 hover:text-gray-900">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
+            </button>
+            
+            <!-- User Menu -->
+            <div class="relative">
+              <button @click="showUserMenu = !showUserMenu" class="flex items-center space-x-3 text-sm rounded-lg p-2 hover:bg-gray-100">
+                <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
+                  <span class="text-white font-medium">{{ userInitials }}</span>
+                </div>
+                <div class="text-left">
+                  <p class="font-medium text-gray-900">{{ user?.first_name }} {{ user?.last_name }}</p>
+                  <p class="text-xs text-gray-500 capitalize">{{ user?.role }}</p>
+                </div>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              
+              <!-- Dropdown Menu -->
+              <div v-if="showUserMenu" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div class="py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                  <button @click="logout" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -70,12 +118,12 @@
         </div>
       </div>
 
-      <!-- Quick Actions Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Recent Activity -->
+      <!-- Recent Activity -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent Crops -->
         <div class="card">
           <div class="card-header">
-            <h2 class="text-lg font-medium text-gray-900">Recent Activity</h2>
+            <h2 class="text-lg font-medium text-gray-900">Recent Crops</h2>
             <router-link to="/crops" class="text-sm text-primary-600 hover:text-primary-700">View all</router-link>
           </div>
           <div class="card-body">
@@ -108,131 +156,35 @@
           </div>
           <div class="card-body">
             <div class="grid grid-cols-2 gap-4">
-              <router-link to="/crops" class="block p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors text-center">
+              <button class="p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">
                 <svg class="w-8 h-8 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 <p class="text-sm font-medium text-gray-900">Add Crop</p>
-              </router-link>
+              </button>
               
-              <router-link to="/marketplace" class="block p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-center">
+              <button class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
                 <svg class="w-8 h-8 text-green-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17a1 1 0 001-1v-2a2 2 0 00-2-2H9a2 2 0 00-2 2v2c0 .28.216.5.484.576"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                 </svg>
-                <p class="text-sm font-medium text-gray-900">Marketplace</p>
-              </router-link>
+                <p class="text-sm font-medium text-gray-900">View Market</p>
+              </button>
               
-              <router-link to="/weather" class="block p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors text-center">
+              <button class="p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
                 <svg class="w-8 h-8 text-yellow-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
                 </svg>
                 <p class="text-sm font-medium text-gray-900">Weather</p>
-              </router-link>
+              </button>
               
-              <router-link to="/analytics" class="block p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors text-center">
+              <button class="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                 <svg class="w-8 h-8 text-purple-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <p class="text-sm font-medium text-gray-900">Analytics</p>
-              </router-link>
+                <p class="text-sm font-medium text-gray-900">Reports</p>
+              </button>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- All Features Section -->
-      <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Explore All Features</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <router-link to="/crops" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Crop Management</h3>
-                <p class="text-sm text-gray-500">Manage your crops</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Track planting, growth, and harvest cycles for all your crops</p>
-          </router-link>
-
-          <router-link to="/marketplace" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17a1 1 0 001-1v-2a2 2 0 00-2-2H9a2 2 0 00-2 2v2c0 .28.216.5.484.576"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Marketplace</h3>
-                <p class="text-sm text-gray-500">Buy & Sell</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Connect with buyers and sellers in agricultural markets</p>
-          </router-link>
-
-          <router-link to="/price-trends" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Price Trends</h3>
-                <p class="text-sm text-gray-500">Market Analysis</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Track price movements and market trends for your crops</p>
-          </router-link>
-
-          <router-link to="/weather" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Weather Dashboard</h3>
-                <p class="text-sm text-gray-500">Weather Info</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Get weather forecasts and farming recommendations</p>
-          </router-link>
-
-          <router-link to="/analytics" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Analytics</h3>
-                <p class="text-sm text-gray-500">Data Insights</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Advanced analytics and reporting for your farm</p>
-          </router-link>
-
-          <router-link to="/notifications" class="card p-6 hover:shadow-lg transition-shadow block">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Notifications</h3>
-                <p class="text-sm text-gray-500">Alerts & Updates</p>
-              </div>
-            </div>
-            <p class="text-gray-600">Stay updated with important alerts and notifications</p>
-          </router-link>
         </div>
       </div>
     </div>
@@ -240,15 +192,11 @@
 </template>
 
 <script>
-import AppNavbar from './AppNavbar.vue'
-
 export default {
   name: 'Dashboard',
-  components: {
-    AppNavbar
-  },
   data() {
     return {
+      showUserMenu: false,
       user: null,
       stats: {
         totalCrops: 0,
@@ -291,6 +239,10 @@ export default {
     formatDate(dateString) {
       if (!dateString) return 'N/A'
       return new Date(dateString).toLocaleDateString()
+    },
+    logout() {
+      localStorage.clear()
+      this.$router.push('/login')
     }
   },
   mounted() {

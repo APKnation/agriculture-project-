@@ -83,8 +83,15 @@ def register_view(request):
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
+def current_user_view(request):
+    """Get current user information"""
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def change_password_view(request):
     current_password = request.data.get('current_password')
     new_password = request.data.get('new_password')

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // Import all components
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import LandingPage from "./components/LandingPage.vue";
 import Dashboard from "./components/Dashboard.vue";
 import FarmerDashboard from "./components/FarmerDashboard.vue";
 import OfficerDashboard from "./components/OfficerDashboard.vue";
@@ -20,16 +21,10 @@ import AdvancedAnalytics from "./components/AdvancedAnalytics.vue";
 import WeatherDashboard from "./components/WeatherDashboard.vue";
 
 const routes = [
-  // Root path - redirect based on authentication
-  { path: "/", redirect: to => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      return "/dashboard";
-    } else {
-      return "/login";
-    }
-  }},
+  // Root path - show landing page
+  { path: "/", component: LandingPage },
   
+  // Authentication routes
   { path: "/login", component: Login },
   { path: "/register", component: Register },
 
