@@ -7,10 +7,17 @@ class User(AbstractUser):
         ('officer', 'Market Officer'),
         ('admin', 'Admin'),
     )
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='farmer')
     region = models.CharField(max_length=100, blank=True, null=True)
     preferred_markets = models.CharField(max_length=200, blank=True, null=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     def __str__(self):
         return self.username

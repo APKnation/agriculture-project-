@@ -85,6 +85,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'username',
+            'email',
+            'first_name',
+            'last_name',
             'password',
             'role',
             'region',
@@ -93,7 +96,12 @@ class UserSerializer(serializers.ModelSerializer):
             'profile_image_url',
             'owned_crops'
         ]
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True}
+        }
 
     def get_profile_image_url(self, obj):
         if obj.profile_image:
@@ -104,10 +112,12 @@ class UserSerializer(serializers.ModelSerializer):
         return None
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)  # hash password
-        user.save()
+        # Hash the password before creating the user
+        password = validated_data.pop('password', None)
+        user = User.objects.create_user(**validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
         return user
 
 

@@ -1,18 +1,14 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import path from 'path'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: '/', // Use relative paths for assets
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8003',
-        changeOrigin: true,
-        secure: false,
-      }
+  base: './',
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src')
     }
   },
   build: {
@@ -20,21 +16,39 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     target: 'es2015',
-    minify: 'esbuild',
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
-      input: resolve(__dirname, 'index.html'),
+      input: path.resolve(__dirname, 'index.html'),
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]',
-        format: 'es' // Ensure ES modules
+        format: 'es'
       }
     },
-    chunkSizeWarningLimit: 1000,
+    minify: 'esbuild'
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
+  css: {
+    postcss: {
+      plugins: [
+        require('tailwindcss'),
+        require('autoprefixer')
+      ]
+    }
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src')
     }
   },
   define: {
