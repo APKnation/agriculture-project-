@@ -18,7 +18,27 @@ def health_check(request):
         'cors_allow_all': getattr(settings, 'CORS_ALLOW_ALL_ORIGINS', 'not_set')
     })
 
+def api_root(request):
+    """API root endpoint with information"""
+    return JsonResponse({
+        'message': 'AgriConnect Backend API',
+        'version': '1.0.0',
+        'status': 'running',
+        'endpoints': {
+            'health': '/health/',
+            'admin': '/admin/',
+            'api': '/api/',
+            'auth': '/api/login/',
+            'users': '/api/users/',
+            'crops': '/api/crops/',
+            'market': '/api/market-posts/'
+        },
+        'frontend': 'https://kilimo.netlify.app',
+        'documentation': 'API endpoints available at /api/'
+    })
+
 urlpatterns = [
+    path('', api_root, name='api_root'),
     path('admin/', admin.site.urls),
     path('api/', include('market.urls')),
     path('health/', health_check, name='health_check'),
