@@ -16,9 +16,13 @@ git pull origin main
 # Navigate to backend
 cd backend
 
+# Set correct working directory for PythonAnywhere
+echo "📁 Setting working directory..."
+export PYTHONPATH=/home/apknation/agriculture-project-:$PYTHONPATH
+
 # Install/Update dependencies
 echo "📦 Installing Python dependencies..."
-pip install -r requirements.txt
+pip install -r requirements_pythonanywhere.txt
 
 # Collect static files
 echo "📁 Collecting static files..."

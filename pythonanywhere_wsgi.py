@@ -13,6 +13,11 @@ project_path = '/home/apknation/agriculture-project-/backend'
 if project_path not in sys.path:
     sys.path.insert(0, project_path)
 
+# Add the parent directory to the Python path (for imports)
+parent_path = '/home/apknation/agriculture-project-'
+if parent_path not in sys.path:
+    sys.path.insert(0, parent_path)
+
 # Set the Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings_production')
 
