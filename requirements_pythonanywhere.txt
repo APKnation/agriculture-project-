@@ -1,0 +1,36 @@
+# PythonAnywhere Requirements
+# Username: apknation
+# Project: agriculture-project-
+
+# Core Django
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+django-filter==23.3
+djangorestframework-simplejwt==5.3.0
+
+# Database
+dj-database-url==2.1.0
+psycopg2-binary==2.9.9
+
+# Static files
+whitenoise==6.6.0
+
+# HTTP requests
+requests==2.31.0
+urllib3==2.1.0
+
+# Image processing
+Pillow==10.1.0
+
+# Security
+bcrypt==4.1.2
+cryptography==41.0.7
+PyJWT==2.8.0
+
+# Development/Production
+gunicorn==21.2.0
+python-decouple==3.8
+
+# Additional utilities
+python-dotenv==1.0.0

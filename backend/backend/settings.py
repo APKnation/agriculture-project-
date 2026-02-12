@@ -15,8 +15,7 @@ DEBUG = False
 
 
 ALLOWED_HOSTS = [
-    "agriculture-project-apk.onrender.com",
-    ".onrender.com",
+    "apknation.pythonanywhere.com",
     ".netlify.app",
     "localhost",
     "127.0.0.1"
@@ -123,12 +122,14 @@ AUTH_USER_MODEL = 'market.User'
 # --- CORS / CSRF ---
 CORS_ALLOWED_ORIGINS = [
     "https://kilimo.netlify.app",
+    "https://apknation.pythonanywhere.com",
     "http://localhost:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://kilimo.netlify.app",
+    "https://apknation.pythonanywhere.com",
 ]
 
 # JWT Settings

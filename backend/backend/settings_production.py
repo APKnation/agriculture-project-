@@ -25,7 +25,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get
 ALLOWED_HOSTS += [
     'localhost', 
     '127.0.0.1', 
-    'agriculture-project-apk.onrender.com',
+    'apknation.pythonanywhere.com',
     'kilimo.netlify.app'
 ]
 
@@ -145,8 +145,8 @@ CORS_ALLOWED_ORIGINS = [
     netlify_url,
     "http://localhost:4173",      # Local preview server
     "http://localhost:5173",      # Local dev server
-    "https://agriculture-project-apk.onrender.com",     # Allow all Render domains
-    "https://kilimo.netlify.app",      # Allow all Netlify domains
+    "https://apknation.pythonanywhere.com",     # PythonAnywhere domain
+    "https://kilimo.netlify.app",      # Netlify domain
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -179,8 +179,8 @@ CSRF_TRUSTED_ORIGINS = [
     netlify_url,
     "http://localhost:4173",      # Local preview server
     "http://localhost:5173",      # Local dev server
-    "https://agriculture-project-apk.onrender.com",     # Allow all Render domains
-    "https://kilimo.netlify.app",      # Allow all Netlify domains
+    "https://apknation.pythonanywhere.com",     # PythonAnywhere domain
+    "https://kilimo.netlify.app",      # Netlify domain
 ]
 # Additional CSRF settings for SPA
 CSRF_COOKIE_SECURE = True
